@@ -4,11 +4,13 @@ import {Icon} from 'antd';
 function Footer() {
     return (
         <div style={{
-            height: '80px', display: 'flex',
-            flexDirection: 'column', alignItems: 'center',
-            justifyContent: 'center', fontSize:'1rem'
+            width:'100%',
+            height: '80px',
+            textAlign:'center',
+            borderTop:'1px solid #e5e5e5',
+            fontSize:'1rem'
         }}>
-           <p><Icon type="fire" theme='filled' /> MyBoard  <Icon type="fire" theme='filled' /></p>
+           <p>MyBoard  <Icon type="fire" theme='filled' /></p>
         </div>
     )
 }
