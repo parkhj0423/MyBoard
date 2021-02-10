@@ -40,12 +40,14 @@ router.post('/savePost', (req, res) => {
 });
 
 router.post('/getPost', (req, res) => {
-  Post.find({ writer: req.body.writer }).populate('writer').exec((err, result) => {
-    if (err) {
-      return res.status(400).send(err);
-    }
-    return res.status(200).json({ success: true, result });
-  });
+  Post.find()
+    .populate('writer')
+    .exec((err, result) => {
+      if (err) {
+        return res.status(400).send(err);
+      }
+      return res.status(200).json({ success: true, result });
+    });
 });
 
 router.post('/uploadfiles', (req, res) => {
@@ -62,14 +64,23 @@ router.post('/uploadfiles', (req, res) => {
 });
 
 router.post('/getDetailPost', (req, res) => {
-  Post.findOne({ _id: req.body.postId }).populate('writer').exec((err, result) => {
+  Post.findOne({ _id: req.body.postId })
+    .populate('writer')
+    .exec((err, result) => {
+      if (err) {
+        return res.status(400).send(err);
+      }
+      return res.status(200).json({ success: true, result });
+    });
+});
+
+router.post('/deletePost', (req, res) => {
+  Post.findOneAndDelete({ _id: req.body.postId }).exec((err, result) => {
     if (err) {
       return res.status(400).send(err);
     }
     return res.status(200).json({ success: true, result });
   });
 });
-
-
 
 module.exports = router;

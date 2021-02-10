@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Input, Button, message } from 'antd';
+import { Input, Button, message, Select } from 'antd';
 import Editor from '../Commons/Editor';
 import Axios from 'axios';
 import { withRouter } from 'react-router-dom';
-
+const { Option } = Select;
 function BoardUpload(props) {
   const [Content, setContent] = useState('');
   const [Title, setTitle] = useState('');
-  const [Files, setFiles] = useState([])
-
+  const [Files, setFiles] = useState([]);
+  const [Tags, setTags] = useState('')
   const onTitleChange = (event) => {
     setTitle(event.currentTarget.value);
     console.log(Title);
@@ -19,8 +19,8 @@ function BoardUpload(props) {
   };
 
   const onFilesChange = (files) => {
-    setFiles(files)
-  }
+    setFiles(files);
+  };
   const onSubmitClick = (event) => {
     event.preventDefault();
     if (Title.trim() === '') {
@@ -36,6 +36,7 @@ function BoardUpload(props) {
       writer: localStorage.getItem('userId'),
       title: Title,
       text: Content,
+      tags : Tags
     };
     Axios.post('/api/post/savePost', variable).then((response) => {
       if (response.data.success) {
@@ -48,6 +49,12 @@ function BoardUpload(props) {
     });
   };
 
+
+  function handleChange(value) {
+    console.log(`selected ${value}`);
+    setTags(value)
+  }
+console.log(Tags)
   return (
     <div
       style={{
@@ -60,21 +67,37 @@ function BoardUpload(props) {
       }}
     >
       <Input
-        style={{ width: '200px' }}
+        style={{ width: '25%' }}
         placeholder="Title"
         value={Title}
         onChange={onTitleChange}
       />
       <br />
-      <Editor
-        placeholder={'Start Posting Something'}
-        onEditorChange={onEditorChange}
-        onFilesChange={onFilesChange}
-      ></Editor>
+      <Select
+        mode="multiple"
+        allowClear
+        style={{ width: '25%' }}
+        placeholder="Select Tags"
+        onChange={handleChange}
+      >
+        <Option key="Tech">Tech</Option>
+        <Option key="Daily">Daily</Option>
+        <Option key="Food">Food</Option>
+        <Option key="Diary">Diary</Option>
+      </Select>
+
+      <br />
+      <div style={{ width: '80%' }}>
+        <Editor
+          placeholder={'Start Posting Something'}
+          onEditorChange={onEditorChange}
+          onFilesChange={onFilesChange}
+        ></Editor>
+      </div>
       <br />
       <br />
       <br />
-      <Button type="default" onClick={onSubmitClick}>
+      <Button type="primary" onClick={onSubmitClick}>
         Save
       </Button>
     </div>

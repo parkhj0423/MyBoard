@@ -1,10 +1,12 @@
 import React from 'react';
-import ReactQuill, { Quill } from 'react-quill';
+  import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-
+import ImageResize from 'quill-image-resize-module';
+import VideoResize from 'quill-video-resize-module';
 import axios from 'axios';
-const __ISMSIE__ = navigator.userAgent.match(/Trident/i) ? true : false;
-
+// const __ISMSIE__ = navigator.userAgent.match(/Trident/i) ? true : false;
+Quill.register('modules/imageResize', ImageResize);
+Quill.register('modules/videoResize', VideoResize);
 // Quill.register('modules/clipboard', PlainClipboard, true);
 
 const QuillClipboard = Quill.import('modules/clipboard');
@@ -87,7 +89,8 @@ class VideoBlot extends BlockEmbed {
       const videoTag = super.create();
       videoTag.setAttribute('src', value.src);
       videoTag.setAttribute('title', value.title);
-      videoTag.setAttribute('width', '100%');
+      videoTag.setAttribute('width', '350px');
+      videoTag.setAttribute('height', '196.875.px');
       videoTag.setAttribute('controls', '');
 
       return videoTag;
@@ -96,7 +99,8 @@ class VideoBlot extends BlockEmbed {
       iframeTag.setAttribute('src', value);
       iframeTag.setAttribute('frameborder', '0');
       iframeTag.setAttribute('allowfullscreen', true);
-      iframeTag.setAttribute('width', '100%');
+      iframeTag.setAttribute('width', '350px');
+      iframeTag.setAttribute('height', '196.875.px');
       return iframeTag;
     }
   }
@@ -188,14 +192,15 @@ class Editor extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log(this.props);
 
     this.state = {
-      editorHtml: __ISMSIE__ ? '<p>&nbsp;</p>' : '',
+      // editorHtml: __ISMSIE__ ? '<p>&nbsp;</p>' : this.props.textValue,
+      editorHtml: this.props.textValue ,
       files: [],
     };
 
     this.reactQuillRef = null;
-
     this.inputOpenImageRef = React.createRef();
     this.inputOpenVideoRef = React.createRef();
     this.inputOpenFileRef = React.createRef();
@@ -211,6 +216,7 @@ class Editor extends React.Component {
 
   handleChange = (html) => {
     console.log('html', html);
+
     // https://youtu.be/BbR-QCoKngE
     // https://www.youtube.com/embed/ZwKhufmMxko
     // https://tv.naver.com/v/9176888
@@ -249,7 +255,7 @@ class Editor extends React.Component {
       e.currentTarget.files.length > 0
     ) {
       const file = e.currentTarget.files[0];
-      console.log(file)
+      console.log(file);
 
       let formData = new FormData();
       const config = {
@@ -379,7 +385,6 @@ class Editor extends React.Component {
       });
     }
   };
-
   render() {
     return (
       <div>
@@ -407,6 +412,7 @@ class Editor extends React.Component {
           <button className="ql-clean" />
         </div>
         <ReactQuill
+          style={{ width: '100%', height: '400px' }}
           ref={(el) => {
             this.reactQuillRef = el;
           }}
@@ -414,7 +420,13 @@ class Editor extends React.Component {
           onChange={this.handleChange}
           modules={this.modules}
           formats={this.formats}
-          value={this.state.editorHtml}
+          value={this.state.editorHtml || ''}
+          // value={this.props.textValue || this.state.editorHtml}
+          // value={
+          //   this.props.textValue
+          //     ? this.props.textValue 
+          //     : this.state.editorHtml || ''
+          // }
           placeholder={this.props.placeholder}
         />
         <input
@@ -443,7 +455,16 @@ class Editor extends React.Component {
   }
 
   modules = {
-    // syntax: true,
+    imageResize: {
+      // parchment: Quill.import('parchment'),
+      displaySize: true,
+      handleStyles: {
+        backgroundColor: 'black',
+        border: 'none',
+        color: 'white',
+        // 크기 표시를위한 다른 camelCase 스타일
+      },
+    },
     toolbar: {
       container: '#toolbar',
       //id ="toorbar"는  그 위에 B I U S I V F P 이거 있는 곳이다.
