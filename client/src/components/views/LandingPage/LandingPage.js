@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import {
   Carousel,
@@ -11,10 +11,10 @@ import {
   message,
   Popconfirm,
   Tag,
+  Input,
 } from 'antd';
 import Axios from 'axios';
 import Pagination from './pagination';
-
 const { Title } = Typography;
 const { Meta } = Card;
 function LandingPage(props) {
@@ -28,19 +28,18 @@ function LandingPage(props) {
   };
 
   const [PostList, setPostList] = useState([]);
-  const [CurrentPage, setCurrentPage] = useState(1);
-  const [PostsPerPage, setPostsPerPage] = useState(8);
   const [Like, setLike] = useState(false);
+  const [CurrentPage, setCurrentPage] = useState(1);
+  const [PostsPerPage] = useState(8);
   //get Current page
   const indexOfLastPost = CurrentPage * PostsPerPage;
   const indexOfFirstPost = indexOfLastPost - PostsPerPage;
   const CurrentPosts = PostList.slice(indexOfFirstPost, indexOfLastPost);
-  
-  
+
   //! change page
-  const paginate = (pageNumber)=> {
-    setCurrentPage(pageNumber)
-  }
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   useEffect(() => {
     getPostList();
@@ -75,8 +74,6 @@ function LandingPage(props) {
     }
   };
 
-
-
   const onLikeClick = () => {
     setLike(!Like);
   };
@@ -86,13 +83,11 @@ function LandingPage(props) {
       <Col key={index} lg={6} md={12} xs={24}>
         <Card
           hoverable
-          style={{ width: '85%', margin: '16px auto', borderRadius: '50px' }}
+          style={{ width: '85%', margin: '16px auto', borderRadius: '30px' }}
           actions={[
             <a href={`/board/${postlist._id}`}>
               <Icon type="zoom-in" key="zoom-in" />
             </a>,
-
-            // <Icon type="edit" key="edit" onClick={() => props.history.push('/board/modify')} />,
             <Icon
               type="heart"
               theme={Like ? 'filled' : 'outlined'}
@@ -105,7 +100,9 @@ function LandingPage(props) {
               okText="예"
               cancelText="아니오"
             >
-              <Icon type="delete" key="delete" theme="outlined" />
+              {postlist.writer._id === localStorage.getItem('userId') && (
+                <Icon type="delete" key="delete" theme="outlined" />
+              )}
             </Popconfirm>,
           ]}
         >
@@ -121,7 +118,7 @@ function LandingPage(props) {
             }}
           >
             {postlist.tags.map((tags, index) => {
-              const colors = ['#f50','#2db7f5','#87d068','#108ee9']      
+              const colors = ['#f50', '#2db7f5', '#87d068', '#108ee9'];
               return (
                 <Tag color={colors[index]} key={index}>
                   {tags}
@@ -130,7 +127,7 @@ function LandingPage(props) {
             })}
           </div>
           <hr />
-          <div style={{ height: 150, overflowY: 'scroll', marginTop: 10 }}>
+          <div style={{ height: '150px', overflowY: 'scroll', marginTop: 10 }}>
             <div dangerouslySetInnerHTML={{ __html: postlist.text }} />
           </div>
         </Card>
@@ -154,32 +151,33 @@ function LandingPage(props) {
       <div style={{ width: '85%', margin: '3rem auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Title level={1}>Posts!</Title>
-          <Icon
-            type="plus-circle"
-            theme="outlined"
-            onClick={() => props.history.push('/upload')}
-            style={{ fontSize: '50px' }}
-          ></Icon>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Icon
+              type="search"
+              theme="outlined"
+              onClick={() => props.history.push('/search')}
+              style={{ fontSize: '40px', marginRight: '20px' }}
+            />
+            <Icon
+              type="plus-circle"
+              theme="outlined"
+              onClick={() => props.history.push('/upload')}
+              style={{ fontSize: '40px' }}
+            />
+          </div>
         </div>
         <hr />
 
         {/* 리스트 표시 */}
-        <div style={{}}>
-          <div
-            style={{
-              width: '100%',
-              height: '150px',
-              border: '1px solid',
-              borderRadius: '10px',
-            }}
-          >
-            ddd
-          </div>
+        <div>
           <Row gutter={[32, 32]}>{renderCards}</Row>
-          <Pagination PostsPerPage={PostsPerPage} totalPosts={PostList.length} paginate={paginate} />
+          <Pagination
+            PostsPerPage={PostsPerPage}
+            totalPosts={PostList.length}
+            paginate={paginate}
+          />
         </div>
       </div>
-      
     </div>
   );
 }

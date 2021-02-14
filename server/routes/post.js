@@ -83,4 +83,19 @@ router.post('/deletePost', (req, res) => {
   });
 });
 
+router.post('/modifyPost', (req, res) => {
+  Post.findOneAndUpdate(
+    { _id: req.body.postId },
+    {
+      $set: { title: req.body.title, text: req.body.text, tags: req.body.tags,description:req.body.description },
+    },
+  ).exec((err, result) => {
+    if (err) {
+      return res.status(400).send(err);
+    }
+    return res.status(200).json({ success: true, result });
+  });
+});
+
+
 module.exports = router;

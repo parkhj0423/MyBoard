@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
-import { Input, Button, message, Select } from 'antd';
+import { Button, message, Select } from 'antd';
 import Editor from '../Commons/Editor';
 import Axios from 'axios';
 import { withRouter } from 'react-router-dom';
+import './BoardUpload.css';
+
+
 const { Option } = Select;
 function BoardUpload(props) {
   const [Content, setContent] = useState('');
   const [Title, setTitle] = useState('');
+  const [Description, setDescription] = useState('');
   const [Files, setFiles] = useState([]);
-  const [Tags, setTags] = useState('')
+  const [Tags, setTags] = useState('');
   const onTitleChange = (event) => {
     setTitle(event.currentTarget.value);
-    console.log(Title);
+  };
+
+  const onDescriptionChange = (event) => {
+    setDescription(event.currentTarget.value);
   };
 
   const onEditorChange = (value) => {
@@ -35,8 +42,9 @@ function BoardUpload(props) {
     let variable = {
       writer: localStorage.getItem('userId'),
       title: Title,
+      description: Description,
       text: Content,
-      tags : Tags
+      tags: Tags,
     };
     Axios.post('/api/post/savePost', variable).then((response) => {
       if (response.data.success) {
@@ -49,12 +57,10 @@ function BoardUpload(props) {
     });
   };
 
-
   function handleChange(value) {
     console.log(`selected ${value}`);
-    setTags(value)
+    setTags(value);
   }
-console.log(Tags)
   return (
     <div
       style={{
@@ -66,17 +72,31 @@ console.log(Tags)
         padding: '100px 20px',
       }}
     >
-      <Input
-        style={{ width: '25%' }}
-        placeholder="Title"
-        value={Title}
-        onChange={onTitleChange}
-      />
-      <br />
+      <div className="group">
+        <input type="text" required value={Title} onChange={onTitleChange} />
+        <span className="highlight"></span>
+        <span className="bar"></span>
+        <label>Title</label>
+      </div>
+
+      <div className="group">
+        <input
+          type="text"
+          required
+          value={Description}
+          onChange={onDescriptionChange}
+        />
+        <span className="highlight"></span>
+        <span className="bar"></span>
+        <label>Description</label>
+      </div>
+
+
       <Select
+
         mode="multiple"
         allowClear
-        style={{ width: '25%' }}
+        style={{ width: '300px' }}
         placeholder="Select Tags"
         onChange={handleChange}
       >
@@ -87,7 +107,7 @@ console.log(Tags)
       </Select>
 
       <br />
-      <div style={{ width: '80%' }}>
+      <div style={{ width: '50%' }}>
         <Editor
           placeholder={'Start Posting Something'}
           onEditorChange={onEditorChange}

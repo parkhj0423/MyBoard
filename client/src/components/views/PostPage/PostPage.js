@@ -25,12 +25,9 @@ function PostPage(props) {
     });
   }, []);
 
-  const onModifyClick = (event) => {
-    event.preventDefault();
-  };
-
   if (Post.writer) {
     let postCreatedDate = Post.createdAt.substring(0, 10);
+    let postUpdatedDate = Post.updatedAt.substring(0, 10);
     // let postCreatedTime = Post.createdAt.substring(11,19)
     return (
       <div className="postPage" style={{ width: '80%', margin: '2rem auto' }}>
@@ -58,13 +55,19 @@ function PostPage(props) {
             />
             <Title level={4}>{Post.title}</Title>
           </div>
-          {/* {Post.writer._id && localStorage.getItem('userId')} */}
-
-          <a href={`/modify/${postId}`} property={Post}>
-            <Icon type="edit" theme="filled" style={{ fontSize: '35px' }} />
-          </a>
+          {Post.writer._id === localStorage.getItem('userId') && (
+            <a href={`/modify/${postId}`} property={Post}>
+              <Icon type="edit" theme="filled" style={{ fontSize: '35px' }} />
+            </a>
+          )}
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginTop: '10px',
+          }}
+        >
           <div>
             {Post.tags.map((tags, index) => {
               const colors = ['#f50', '#2db7f5', '#87d068', '#108ee9'];
@@ -75,13 +78,26 @@ function PostPage(props) {
               );
             })}
           </div>
-          <p style={{ fontSize: '12px' }}>{postCreatedDate} 에 작성됨</p>
+          <p style={{ fontSize: '8px' }}>
+            {postCreatedDate} 에 작성됨
+            <br /> {postUpdatedDate}에 마지막으로 수정됨
+          </p>
         </div>
-
         <hr />
-
         <br />
-        <div dangerouslySetInnerHTML={{ __html: Post.text }} />
+        <div
+          style={{
+            background: '#faf7f7',
+            padding: '3em',
+            borderRadius: '35px',
+          }}
+        >
+          <div dangerouslySetInnerHTML={{ __html: Post.text }} />
+        </div>
+        <div style={{ border: '1px solid' }}>
+          {/* comment */}
+          comment
+        </div>
       </div>
     );
   } else {

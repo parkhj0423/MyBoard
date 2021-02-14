@@ -1,14 +1,18 @@
 import React from 'react';
-  import ReactQuill, { Quill } from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import ImageResize from 'quill-image-resize-module';
 import VideoResize from 'quill-video-resize-module';
 import axios from 'axios';
-// const __ISMSIE__ = navigator.userAgent.match(/Trident/i) ? true : false;
+import { Button,  message } from 'antd';
+const __ISMSIE__ = navigator.userAgent.match(/Trident/i) ? true : false;
 Quill.register('modules/imageResize', ImageResize);
 Quill.register('modules/videoResize', VideoResize);
-// Quill.register('modules/clipboard', PlainClipboard, true);
 
+
+
+
+// Quill.register('modules/clipboard', PlainClipboard, true);
 const QuillClipboard = Quill.import('modules/clipboard');
 
 class Clipboard extends QuillClipboard {
@@ -195,32 +199,47 @@ class Editor extends React.Component {
     console.log(this.props);
 
     this.state = {
-      // editorHtml: __ISMSIE__ ? '<p>&nbsp;</p>' : this.props.textValue,
-      editorHtml: this.props.textValue ,
+      editorHtml: __ISMSIE__ ? '<p>&nbsp;</p>' : '',
       files: [],
     };
-
+    this.quillRef = null;
     this.reactQuillRef = null;
     this.inputOpenImageRef = React.createRef();
     this.inputOpenVideoRef = React.createRef();
     this.inputOpenFileRef = React.createRef();
+    this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.attachQuillRefs = this.attachQuillRefs.bind(this);
+  }
+
+  attachQuillRefs() {
+    // Ensure React-Quill reference is available:
+    if (typeof this.reactQuillRef.getEditor !== 'function') return;
+    // Skip if Quill reference is defined:
+    if (this.quill != null) return;
+
+    const quillRef = this.reactQuillRef.getEditor();
+    if (quillRef != null) this.quillRef = quillRef;
   }
 
   componentDidMount() {
     this._isMounted = true;
+    this.attachQuillRefs();
   }
 
   componentWillUnmount() {
     this._isMounted = false;
+    this.attachQuillRefs();
+  }
+
+  handleClick() {
+    message.success('포스팅을 불러왔습니다!')
+    let editor = document.getElementsByClassName('ql-editor');
+    editor[0].innerHTML = this.props.textValue;
   }
 
   handleChange = (html) => {
     console.log('html', html);
-
-    // https://youtu.be/BbR-QCoKngE
-    // https://www.youtube.com/embed/ZwKhufmMxko
-    // https://tv.naver.com/v/9176888
-    // renderToStaticMarkup(ReactHtmlParser(html, options));
 
     this.setState(
       {
@@ -385,6 +404,7 @@ class Editor extends React.Component {
       });
     }
   };
+
   render() {
     return (
       <div>
@@ -410,6 +430,7 @@ class Editor extends React.Component {
           <button className="ql-video" />
           <button className="ql-blockquote" />
           <button className="ql-clean" />
+          {this.props.textValue && <Button type='dashed' id="custom-button" onClick={this.handleClick}>Load</Button>}
         </div>
         <ReactQuill
           style={{ width: '100%', height: '400px' }}
@@ -421,12 +442,6 @@ class Editor extends React.Component {
           modules={this.modules}
           formats={this.formats}
           value={this.state.editorHtml || ''}
-          // value={this.props.textValue || this.state.editorHtml}
-          // value={
-          //   this.props.textValue
-          //     ? this.props.textValue 
-          //     : this.state.editorHtml || ''
-          // }
           placeholder={this.props.placeholder}
         />
         <input

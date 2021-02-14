@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Button, message,Select } from 'antd';
+import {Button, message, Select } from 'antd';
 import Editor from '../Commons/Editor';
 import Axios from 'axios';
 import { withRouter } from 'react-router-dom';
-const {Option} = Select
+const { Option } = Select;
 function BoardModify(props) {
   const postId = props.match.params.postId;
 
   const [Content, setContent] = useState('');
   const [Title, setTitle] = useState('');
-  const [Files, setFiles] = useState([]);
+  const [Description, setDescription] = useState('');
+  const [ setFiles] = useState([]);
   const [ModifyPost, setModifyPost] = useState([]);
-  const [Tags, setTags] = useState('')
+  const [Tags, setTags] = useState('');
   useEffect(() => {
     let variable = {
       postId: postId,
@@ -31,42 +32,46 @@ function BoardModify(props) {
     console.log(Title);
   };
 
-  const onEditorChange = (value) => {
-    setContent(Content.concat(value));
+  const onDescriptionChange = (event) => {
+    setDescription(event.currentTarget.value);
   };
 
+  const onEditorChange = (value) => {
+    setContent(value);
+  };
   const onFilesChange = (files) => {
     setFiles(files);
   };
   function handleChange(value) {
     console.log(`selected ${value}`);
-    setTags(value)
+    setTags(value);
   }
 
   const onSubmitClick = (event) => {
     event.preventDefault();
     if (Title.trim() === '') {
-      alert('제목을 입력해주세요');
+      message.error('제목을 입력해주세요');
       return;
     }
 
     if (Content.trim() === '') {
-      alert('내용을 입력해주세요');
+      message.error('내용을 입력해주세요');
       return;
     }
     let variable = {
-      writer: localStorage.getItem('userId'),
+      postId: postId,
       title: Title,
+      description: Description,
       text: Content,
-      tags: Tags
+      tags: Tags,
     };
-    Axios.post('/api/post/savePost', variable).then((response) => {
+    Axios.post('/api/post/modifyPost', variable).then((response) => {
       if (response.data.success) {
         console.log(response.data.result);
-        message.success('글 수정 성공!');
+        message.success('Success to modify Post!!');
         props.history.push(`/board/${postId}`);
       } else {
-        alert('글 수정 실패!');
+        message.error('Failed to modfiy Post');
       }
     });
   };
@@ -82,13 +87,30 @@ function BoardModify(props) {
         padding: '100px 20px',
       }}
     >
-      <Input
-        style={{ width: '300px' }}
-        placeholder="Title"
-        value={Title ? Title : ModifyPost.title}
-        onChange={onTitleChange}
-      />
-      <br />
+      <div className="group">
+        <input type="text" required value={Title ? Title : ModifyPost.title} onChange={onTitleChange} />
+        <span className="highlight"></span>
+        <span className="bar"></span>
+        <label>Title</label>
+      </div>
+
+      <div className="group">
+        <input
+          type="text"
+          required
+          value={Description ? Description : ModifyPost.description}
+          onChange={onDescriptionChange}
+        />
+        <span className="highlight"></span>
+        <span className="bar"></span>
+        <label>Description</label>
+      </div>
+
+
+
+
+
+
       <Select
         mode="multiple"
         allowClear
@@ -102,8 +124,8 @@ function BoardModify(props) {
         <Option key="Food">Food</Option>
         <Option key="Diary">Diary</Option>
       </Select>
-      <br/>
-      <div style={{width:'80%'}}>
+      <br />
+      <div style={{ width: '50%' }}>
         <Editor
           placeholder={'Start Posting Something'}
           onEditorChange={onEditorChange}
@@ -112,15 +134,11 @@ function BoardModify(props) {
         ></Editor>
       </div>
       <br />
-      <div>{ModifyPost.text}</div>
-      <br />
+
       <br />
       <Button type="default" onClick={onSubmitClick}>
         Save
       </Button>
-      <div style={{ height: 150, overflowY: 'scroll', marginTop: 10 }}>
-        <div dangerouslySetInnerHTML={{ __html: ModifyPost.text }} />
-      </div>
     </div>
   );
 }
