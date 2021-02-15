@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Typography } from 'antd';
 import Axios from 'axios';
 import { Icon, Tag } from 'antd';
+import Comment from './Comment/Comment';
 const { Title } = Typography;
 
 function PostPage(props) {
   const postId = props.match.params.postId;
   const [Post, setPost] = useState([]);
-  console.log(postId);
+  const [Comments, setComments] = useState([]);
   useEffect(() => {
     let variable = {
       postId: postId,
@@ -15,15 +16,26 @@ function PostPage(props) {
     Axios.post('/api/post/getDetailPost', variable).then((response) => {
       if (response.data.success) {
         setPost(response.data.result);
-        console.log(response.data.result);
         for (let key in response.data.result.tags) {
           console.log(response.data.result.tags[key]);
         }
       } else {
         alert('글 가져오기 실패');
       }
+
+      Axios.post('/api/comment/getComments', variable).then((response) => {
+        if (response.data.success) {
+          setComments(response.data.comments);
+        } else {
+          alert('댓글 가져오기 실패!');
+        }
+      });
     });
   }, []);
+
+  const refreshFunction = (newComment) => {
+    setComments(Comments.concat(newComment));
+  };
 
   if (Post.writer) {
     let postCreatedDate = Post.createdAt.substring(0, 10);
@@ -94,9 +106,13 @@ function PostPage(props) {
         >
           <div dangerouslySetInnerHTML={{ __html: Post.text }} />
         </div>
-        <div style={{ border: '1px solid' }}>
+        <div>
           {/* comment */}
-          comment
+          <Comment
+            refreshFunction={refreshFunction}
+            commentLists={Comments}
+            postId={postId}
+          />
         </div>
       </div>
     );
