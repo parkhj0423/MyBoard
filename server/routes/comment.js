@@ -26,6 +26,18 @@ router.post('/saveComment', (req, res) => {
   });
 });
 
+
+router.post('/getCommentsLength', (req, res) => {
+  Comment.find()
+    .populate('writer')
+    .exec((err, comments) => {
+      if (err) {
+        return res.status(400).send(err);
+      }
+      res.status(200).json({ success: true, comments });
+    });
+});
+
 router.post('/getComments', (req, res) => {
   Comment.find({ postId: req.body.postId })
     .populate('writer')

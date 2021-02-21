@@ -40,7 +40,13 @@ router.post('/savePost', (req, res) => {
 });
 
 router.post('/getPost', (req, res) => {
-  Post.find()
+  let variable = {};
+
+  if (req.body.writer) {
+    variable = { writer: req.body.writer };
+  }
+
+  Post.find(variable)
     .populate('writer')
     .exec((err, result) => {
       if (err) {
@@ -87,7 +93,10 @@ router.post('/modifyPost', (req, res) => {
   Post.findOneAndUpdate(
     { _id: req.body.postId },
     {
-      $set: { title: req.body.title, text: req.body.text, tags: req.body.tags,description:req.body.description },
+      title: req.body.title,
+      text: req.body.text,
+      tags: req.body.tags,
+      description: req.body.description,
     },
   ).exec((err, result) => {
     if (err) {
@@ -96,6 +105,5 @@ router.post('/modifyPost', (req, res) => {
     return res.status(200).json({ success: true, result });
   });
 });
-
 
 module.exports = router;

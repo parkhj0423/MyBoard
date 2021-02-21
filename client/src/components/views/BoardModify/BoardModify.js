@@ -88,7 +88,7 @@ function BoardModify(props) {
       }}
     >
       <div className="group">
-        <input type="text" required value={Title ? Title : ModifyPost.title} onChange={onTitleChange} />
+        <input type="text"  value={Title ? Title : ModifyPost.title} onChange={onTitleChange} />
         <span className="highlight"></span>
         <span className="bar"></span>
         <label>Title</label>

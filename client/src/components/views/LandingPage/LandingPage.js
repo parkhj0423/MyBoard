@@ -1,18 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import {
-  Carousel,
-  Typography,
-  Icon,
-  Row,
-  Col,
-  Avatar,
-  Card,
-  message,
-  Popconfirm,
-  Tag,
-  Input,
-} from 'antd';
+import { Carousel, Typography, Icon, Row, Col, Avatar, Card, Tag } from 'antd';
 import Axios from 'axios';
 import Pagination from './pagination';
 const { Title } = Typography;
@@ -28,7 +16,7 @@ function LandingPage(props) {
   };
 
   const [PostList, setPostList] = useState([]);
-  const [Like, setLike] = useState(false);
+  const [Comments, setComments] = useState([]);
   const [CurrentPage, setCurrentPage] = useState(1);
   const [PostsPerPage] = useState(8);
   //get Current page
@@ -43,12 +31,22 @@ function LandingPage(props) {
 
   useEffect(() => {
     getPostList();
+
+    Axios.post('/api/comment/getCommentsLength').then((response) => {
+      if (response.data.success) {
+        setComments(response.data.comments);
+        console.log(response.data.comments);
+      } else {
+        alert('댓글 가져오기 실패!');
+      }
+    });
   }, []);
 
   const getPostList = () => {
     Axios.post('/api/post/getPost').then((response) => {
       if (response.data.success) {
         console.log('postList-LandingPage', response.data.result);
+
         setPostList(response.data.result);
       } else {
         alert('글 가져오기 실패');
@@ -56,81 +54,98 @@ function LandingPage(props) {
     });
   };
 
-  const confirmDelete = (postId, writerId) => {
-    if (localStorage.getItem('userId') === writerId) {
-      let variable = {
-        postId: postId,
-      };
-      Axios.post('/api/post/deletePost', variable).then((response) => {
-        if (response.data.success) {
-          message.success('포스트 삭제 성공');
-          getPostList();
-        } else {
-          alert('failed to delete post');
-        }
-      });
-    } else {
-      message.error('작성자만 삭제할 수 있습니다');
-    }
-  };
-
-  const onLikeClick = () => {
-    setLike(!Like);
-  };
-
   const renderCards = CurrentPosts.map((postlist, index) => {
+    //포스트 생성일
+    let postCreatedDate = postlist.createdAt.substring(0, 10);
+
+    //랜딩페이지 포스트 썸네일 ImageURL 추출 본문의 내용중 가장 첫번째 이미지가 썸네일이 된다.
+    //이미지가 없는 포스트일 경우 대체 GIF 파일로 대체
+    let imageUrl = '';
+    const textSplit = postlist.text.split('src="')[1];
+    if (textSplit !== undefined) {
+      imageUrl = textSplit.split('"')[0];
+    }
+
+    // 댓글 수
+    let postComment = Comments.filter(
+      (comment) => postlist._id === comment.postId,
+    );
+
     return (
       <Col key={index} lg={6} md={12} xs={24}>
-        <Card
-          hoverable
-          style={{ width: '85%', margin: '16px auto', borderRadius: '30px' }}
-          actions={[
-            <a href={`/board/${postlist._id}`}>
-              <Icon type="zoom-in" key="zoom-in" />
-            </a>,
-            <Icon
-              type="heart"
-              theme={Like ? 'filled' : 'outlined'}
-              onClick={onLikeClick}
-            />,
-
-            <Popconfirm
-              title="이 포스팅을 삭제하시겠습니까?"
-              onConfirm={() => confirmDelete(postlist._id, postlist.writer._id)}
-              okText="예"
-              cancelText="아니오"
-            >
-              {postlist.writer._id === localStorage.getItem('userId') && (
-                <Icon type="delete" key="delete" theme="outlined" />
-              )}
-            </Popconfirm>,
-          ]}
-        >
-          <Meta
-            avatar={<Avatar src={postlist.writer.image} />}
-            title={postlist.writer.name}
-            description={postlist.title}
-          />
-          <div
+        <a href={`/board/${postlist._id}`}>
+          <Card
+            hoverable
             style={{
-              width: '100%',
-              margin: '10px 0',
+              width: '320px',
+              margin: '16px auto',
+              borderRadius: '10px',
             }}
+            cover={
+              <img
+                style={{ width: '100%', height: '167px' }}
+                alt="thumbnail"
+                src={
+                  imageUrl
+                    ? imageUrl
+                    : 'https://media.giphy.com/media/l3vRdNUR4XPpRoPmM/giphy.gif'
+                }
+              />
+            }
+            actions={[
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  padding: '0 1rem',
+                }}
+              >
+                <Meta
+                  avatar={<Avatar src={postlist.writer.image} />}
+                  title={postlist.writer.name}
+                />
+                ,
+                <Icon type="heart" theme={'filled'} />
+              </div>,
+            ]}
           >
-            {postlist.tags.map((tags, index) => {
-              const colors = ['#f50', '#2db7f5', '#87d068', '#108ee9'];
-              return (
-                <Tag color={colors[index]} key={index}>
-                  {tags}
-                </Tag>
-              );
-            })}
-          </div>
-          <hr />
-          <div style={{ height: '150px', overflowY: 'scroll', marginTop: 10 }}>
+            <Title level={4}>{postlist.title}</Title>
+            <p style={{ color: 'black' }}>{postlist.description}</p>
+
+            <br />
+
+            <div
+              style={{
+                width: '100%',
+                margin: '10px 0',
+              }}
+            >
+              {postlist.tags.map((tags, index) => {
+                const colors = ['#f50', '#2db7f5', '#87d068', '#108ee9'];
+                return (
+                  <Tag color={colors[index]} key={index}>
+                    {tags}
+                  </Tag>
+                );
+              })}
+            </div>
+
+            <p
+              style={{
+                display: 'flex',
+                fontSize: '0.75rem',
+                lineHeight: '1.5',
+                color: '#868e96',
+              }}
+            >
+              {postCreatedDate} 에 작성됨 ● {postComment.length} 개의 댓글
+            </p>
+
+            {/* <div style={{ height: '150px', overflowY: 'scroll', marginTop: 10 }}>
             <div dangerouslySetInnerHTML={{ __html: postlist.text }} />
-          </div>
-        </Card>
+          </div> */}
+          </Card>
+        </a>
       </Col>
     );
   });
