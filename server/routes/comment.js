@@ -58,4 +58,17 @@ router.post('/deleteComment', (req, res) => {
   });
 });
 
+
+router.post('/deleteAllComments', (req, res) => {
+  Comment.deleteMany({ writer: req.body.writer }).exec((err, result) => {
+    if (err) {
+      return res.status(400).send(err);
+    }
+    res.status(200).json({ success: true, result });
+  });
+});
+
+
+
+
 module.exports = router;

@@ -12,6 +12,7 @@ import PostPage from './views/PostPage/PostPage';
 import BoardModify from './views/BoardModify/BoardModify';
 import SearchPage from './views/SearchPage/SearchPage'
 import MyPage from './views/MyPage/MyPage'
+import TagsPage from './views/TagsPage/TagsPage';
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
@@ -30,6 +31,7 @@ function App() {
           <Route exact path="/board/:postId" component={Auth(PostPage, null)} />
           <Route exact path="/modify/:postId" component={Auth(BoardModify, null)} />
           <Route exact path="/mypage" component={Auth(MyPage, true)} />
+          <Route exact path="/tags/:tags" component={Auth(TagsPage, null)} />
         </Switch>
       </div>
       <Footer />

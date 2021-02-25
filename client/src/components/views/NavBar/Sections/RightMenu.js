@@ -7,16 +7,17 @@ import { withRouter } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Axios from 'axios';
 import { message } from 'antd';
+
 function RightMenu(props) {
   const user = useSelector((state) => state.user);
-  const [MyPageImage, setMyPageImage] = useState('');
+  const [MyPageProfile, setMyPageProfile] = useState('');
   useEffect(() => {
     let variable = {
       _id: localStorage.getItem('userId'),
     };
     Axios.post('/api/users/getUserInfo', variable).then((response) => {
       if (response.data.success) {
-        setMyPageImage(response.data.result[0].image);
+        setMyPageProfile(response.data.result[0]);
       } else {
         message.error('Failed to getInfo');
       }
@@ -34,6 +35,7 @@ function RightMenu(props) {
     });
   };
 
+
   if (user.userData && !user.userData.isAuth) {
     return (
       <Menu mode={props.mode}>
@@ -50,10 +52,10 @@ function RightMenu(props) {
       <Menu mode={props.mode}>
         {user.userData && (
           <Menu.Item key="myPage">
-            <a href="/mypage">
+            <a href='/mypage'>
               <img
                 style={{ width: '30px', height: '30px', borderRadius: '20px' }}
-                src={MyPageImage}
+                src={MyPageProfile.image}
                 alt="MyPageImage"
               />
             </a>

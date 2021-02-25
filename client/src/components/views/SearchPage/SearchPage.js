@@ -24,6 +24,11 @@ function SearchPage() {
   console.log(searched);
 
   const renderSearched = searched.map((list, index) => {
+    let imageUrl = '';
+    const textSplit = list.text.split('src="')[1];
+    if (textSplit !== undefined) {
+      imageUrl = textSplit.split('"')[0];
+    }
     return (
       <List key={index} itemLayout="horizontal">
         <List.Item
@@ -34,16 +39,30 @@ function SearchPage() {
             justifyContent: 'flex-start',
           }}
         >
-          <div>
+          <a href={`/board/${list._id}`}>
+            <img
+              style={{ width: '300px', height: '167px' }}
+              alt="thumbnail"
+              src={
+                imageUrl
+                  ? imageUrl
+                  : 'https://media.giphy.com/media/l3vRdNUR4XPpRoPmM/giphy.gif'
+              }
+            />
+          </a>
+          <div style={{ marginLeft: '2rem' }}>
             <List.Item.Meta
               avatar={<Avatar src={list.writer.image} />}
               title={
                 <a href={`/board/${list._id}`}>
-                  <h1>{list.title}</h1>
+                  <h2>
+                    <b>{list.title}</b>
+                  </h2>
                 </a>
               }
-              description={<h4>{list.writer.name}</h4>}
+              description={<h3>{list.writer.name}</h3>}
             />
+            <h3 style={{ color: '#868e96' }}>{list.description}</h3>
             {list.tags.map((tags, index) => {
               const colors = ['#f50', '#2db7f5', '#87d068', '#108ee9'];
               return (
@@ -52,11 +71,6 @@ function SearchPage() {
                 </Tag>
               );
             })}
-          </div>
-          <div style={{ marginLeft: '10px', textAlign: 'center' }}>
-            <h3>
-              <b>{list.description}</b>
-            </h3>
           </div>
         </List.Item>
       </List>
@@ -68,7 +82,7 @@ function SearchPage() {
   };
 
   return (
-    <div style={{ width: '80%', margin: '100px auto' }}>
+    <div style={{ width: '80%', margin: '3rem auto' }}>
       <div
         style={{
           display: 'flex',

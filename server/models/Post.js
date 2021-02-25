@@ -19,6 +19,10 @@ const postSchema = mongoose.Schema({
     tags : {
         type: Array
     },
+    likes : {
+        type: Number,
+        default: 0
+    }
     // views : {
     //     type : Number,
     //     default:0

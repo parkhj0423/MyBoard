@@ -106,4 +106,29 @@ router.post('/modifyPost', (req, res) => {
   });
 });
 
+router.post('/deleteAllPosts', (req, res) => {
+  Post.deleteMany({ writer: req.body.postId }).exec((err, result) => {
+    if (err) {
+      return res.status(400).send(err);
+    }
+    return res.status(200).json({ success: true, result });
+  });
+});
+
+router.post('/setPostLikeNumber', (req, res) => {
+  Post.findOneAndUpdate(
+    { _id: req.body._id },
+    {
+      likes: req.body.likes,
+    },
+  ).exec((err, result) => {
+    if (err) {
+      return res.status(400).send(err);
+    }
+    return res.status(200).json({ success: true, result });
+  });
+});
+
+
+
 module.exports = router;

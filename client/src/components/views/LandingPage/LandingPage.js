@@ -97,21 +97,25 @@ function LandingPage(props) {
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  padding: '0 1rem',
+                  padding: '0 0.5rem',
                 }}
               >
                 <Meta
                   avatar={<Avatar src={postlist.writer.image} />}
-                  title={postlist.writer.name}
+                  title={<b style={{fontSize:'0.7rem',lineHeight:'1.5'}}>{postlist.writer.name}</b>}
+                  
                 />
-                ,
-                <Icon type="heart" theme={'filled'} />
+                <div>
+                  <Icon type="heart" theme={'filled'} style={{marginRight:'0.25rem'}}/>
+                  {postlist.likes}
+                </div>
               </div>,
             ]}
           >
-            <Title level={4}>{postlist.title}</Title>
-            <p style={{ color: 'black' }}>{postlist.description}</p>
-
+            <div style={{ height: '110px' }}>
+              <Title level={4}>{postlist.title}</Title>
+              <p style={{ color: '#868e96' }}>{postlist.description}</p>
+            </div>
             <br />
 
             <div

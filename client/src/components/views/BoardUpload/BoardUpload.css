@@ -4,7 +4,7 @@
     position: relative;
     margin-bottom: 45px;
 }
-input {
+.group input {
     font-size: 18px;
     padding: 10px 10px 10px 5px;
     display: block;
@@ -12,7 +12,7 @@ input {
     border: none;
     border-bottom: 1px solid #757575;
 }
-input:focus {
+.group input:focus {
     outline: none;
 }
 /* LABEL ======================================= */
@@ -22,7 +22,7 @@ input:focus {
     right: 0px;
 }
 
-label {
+.group label {
     color: #999;
     font-size: 18px;
     font-weight: normal;
@@ -35,7 +35,7 @@ label {
     -webkit-transition: 0.2s ease all;
 }
 /* active state */
-input:focus ~ label, input:valid ~ label {
+.group input:focus ~ label, input:valid ~ label {
     top: -20px;
     font-size: 14px;
     color: black;
@@ -64,7 +64,7 @@ input:focus ~ label, input:valid ~ label {
     right: 50%;
 }
 /* active state */
-input:focus ~ .bar:before, input:focus ~ .bar:after {
+.group input:focus ~ .bar:before, input:focus ~ .bar:after {
     width: 50%;
 }
 /* HIGHLIGHTER ================================== */
@@ -78,7 +78,7 @@ input:focus ~ .bar:before, input:focus ~ .bar:after {
     opacity: 0.5;
 }
 /* active state */
-input:focus ~ .highlight {
+.group input:focus ~ .highlight {
     -webkit-animation: inputHighlighter 0.3s ease;
     -moz-animation: inputHighlighter 0.3s ease;
     animation: inputHighlighter 0.3s ease;
