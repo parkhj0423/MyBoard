@@ -36,12 +36,12 @@ function UploadImage(props) {
 
           setUploadedImg({
             fileName,
-            filePath: `${BASE_URL}/uploads/${fileName}`,
+            filePath: `${PAGE_URL}uploads/${fileName}`,
           });
 
           Axios.post('api/users/setImage', {
             _id: localStorage.getItem('userId'),
-            image: `${BASE_URL}uploads/${fileName}`,
+            image: `${PAGE_URL}uploads/${fileName}`,
           }).then((response) => {
             if (response.data.success) {
               console.log(response.data.result);
