@@ -25,7 +25,7 @@ function SearchPage() {
 
   const renderSearched = searched.map((list, index) => {
     let imageUrl = '';
-    const textSplit = list.text.split('src="')[1];
+    const textSplit = list.text.split('<img src="')[1];
     if (textSplit !== undefined) {
       imageUrl = textSplit.split('"')[0];
     }

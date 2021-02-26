@@ -17,9 +17,9 @@ function ModifyProfile(props) {
   };
 
   const onProfileSubmit = () => {
-    if (Name === '') {
-      return message.error('이름을 입력하세요');
-    }
+    // if (Name === '') {
+    //   return message.error('이름을 입력하세요');
+    // }
     if (Introduce === '') {
       return message.error('한 줄 소개를 입력하세요');
     }

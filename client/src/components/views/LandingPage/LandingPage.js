@@ -61,7 +61,7 @@ function LandingPage(props) {
     //랜딩페이지 포스트 썸네일 ImageURL 추출 본문의 내용중 가장 첫번째 이미지가 썸네일이 된다.
     //이미지가 없는 포스트일 경우 대체 GIF 파일로 대체
     let imageUrl = '';
-    const textSplit = postlist.text.split('src="')[1];
+    const textSplit = postlist.text.split('<img src="')[1];
     if (textSplit !== undefined) {
       imageUrl = textSplit.split('"')[0];
     }

@@ -39,7 +39,7 @@ function UploadImage(props) {
             filePath: `${PAGE_URL}uploads/${fileName}`,
           });
 
-          Axios.post('api/users/setImage', {
+          Axios.post('/api/users/setImage', {
             _id: localStorage.getItem('userId'),
             image: `${PAGE_URL}uploads/${fileName}`,
           }).then((response) => {
