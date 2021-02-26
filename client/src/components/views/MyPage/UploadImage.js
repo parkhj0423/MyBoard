@@ -4,7 +4,6 @@ import { Button, message, Card, Avatar } from 'antd';
 import './UploadImage.css';
 const { Meta } = Card;
 
-const BASE_URL = PAGE_URL;
 
 function UploadImage(props) {
   const [ToggleSubmit, setToggleSubmit] = useState(false);
