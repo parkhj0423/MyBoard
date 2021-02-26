@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Axios from 'axios';
 import { Button, message, Card, Avatar } from 'antd';
 import './UploadImage.css';
+import { PAGE_URL } from '../../Config';
 const { Meta } = Card;
 
 
