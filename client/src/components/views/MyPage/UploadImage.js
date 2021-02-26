@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import Axios from 'axios';
 import { Button, message, Card, Avatar } from 'antd';
 import './UploadImage.css';
-import { PAGE_URL } from '../../Config';
 const { Meta } = Card;
 
-const BASE_URL = PAGE_URL;
+const BASE_URL = 'http://localhost:5000';
 
 function UploadImage(props) {
   const [ToggleSubmit, setToggleSubmit] = useState(false);
@@ -74,26 +73,26 @@ function UploadImage(props) {
           />
         }
       />
-      {props.MyProfile._id === localStorage.getItem('userId') && 
-      <div
-        className="filebox bs3-success"
-        style={{ position: 'relative', marginTop: '1rem' }}
-      >
-        <input
-          id="input_image"
-          type="file"
-          onChange={onChange}
-          onClick={onInsertImageClick}
-          style={{ display: 'none' }}
-        />
-        <label
-          htmlFor="input_image"
-          style={{ width: '128px', textAlign: 'center' }}
+      {props.MyProfile._id === localStorage.getItem('userId') && (
+        <div
+          className="filebox bs3-success"
+          style={{ position: 'relative', marginTop: '1rem' }}
         >
-          이미지 선택
-        </label>
-      </div>
-      }
+          <input
+            id="input_image"
+            type="file"
+            onChange={onChange}
+            onClick={onInsertImageClick}
+            style={{ display: 'none' }}
+          />
+          <label
+            htmlFor="input_image"
+            style={{ width: '128px', textAlign: 'center' }}
+          >
+            이미지 선택
+          </label>
+        </div>
+      )}
       {content.name && (
         <p style={{ margin: '0' }}>
           <b>선택한 파일 : {content.name}</b>
