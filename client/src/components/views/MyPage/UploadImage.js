@@ -4,7 +4,7 @@ import { Button, message, Card, Avatar } from 'antd';
 import './UploadImage.css';
 const { Meta } = Card;
 
-const BASE_URL = 'http://localhost:5000';
+const BASE_URL = PAGE_URL;
 
 function UploadImage(props) {
   const [ToggleSubmit, setToggleSubmit] = useState(false);
@@ -41,7 +41,7 @@ function UploadImage(props) {
 
           Axios.post('api/users/setImage', {
             _id: localStorage.getItem('userId'),
-            image: `${BASE_URL}/uploads/${fileName}`,
+            image: `${BASE_URL}uploads/${fileName}`,
           }).then((response) => {
             if (response.data.success) {
               console.log(response.data.result);
