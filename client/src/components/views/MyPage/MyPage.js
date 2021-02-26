@@ -6,13 +6,16 @@ import DeletePage from '../DeletePage/DeletePage';
 import UploadImage from './UploadImage';
 import ModifyProfile from './ModifyProfile';
 
-function MyPage() {
+function MyPage(props) {
+  const userId = props.match.params.userId
+  
   const [MyPostList, setMyPostList] = useState([]);
   const [MyProfile, setMyProfile] = useState([]);
 
   useEffect(() => {
+    
     let variable = {
-      writer: localStorage.getItem('userId'),
+      writer: userId,
     };
     Axios.post('/api/post/getPost', variable).then((response) => {
       if (response.data.success) {
@@ -24,10 +27,10 @@ function MyPage() {
     });
 
     Axios.post('/api/users/getUserInfo', {
-      _id: localStorage.getItem('userId'),
+      _id: userId,
     }).then((response) => {
       if (response.data.success) {
-        console.log(response.data.result[0].introduce);
+        console.log(response.data.result[0]);
         setMyProfile(response.data.result[0]);
       } else {
         message.error('Failed to get UserInfo');
@@ -74,14 +77,12 @@ function MyPage() {
               }
               description={<h4>{list.writer.name}</h4>}
             />
-            <h3 style={{ color: '#868e96' }}>{list.description}</h3>
+            <h3 style={{ color: ' ' }}>{list.description}</h3>
             {list.tags.map((tags, index) => {
               const colors = ['#f50', '#2db7f5', '#87d068', '#108ee9'];
               return (
                 <Tag color={colors[index]} key={index}>
-                  <a href={`/tags/${tags}`}>
-                  {tags}
-                  </a>
+                  <a href={`/tags/${tags}`}>{tags}</a>
                 </Tag>
               );
             })}
@@ -96,20 +97,24 @@ function MyPage() {
       <div
         style={{ margin: '5rem 0', display: 'flex', justifyContent: 'center' }}
       >
-        <div>
-          {/* 프로필 사진 이미지 업로드 컴포넌트 */}
-          <UploadImage avatarSrc={MyProfile.image} />
-        </div>
-        <div
-          style={{
-            marginLeft: '1rem',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          {/* 이름, 한 줄 소개 수정 컴포넌트 */}
-          <ModifyProfile MyProfile={MyProfile} />
-        </div>
+        
+        
+            <div>
+              {/* 프로필 사진 이미지 업로드 컴포넌트 */}
+              <UploadImage MyProfile={MyProfile}/>
+            </div>
+            <div
+              style={{
+                marginLeft: '1rem',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              {/* 이름, 한 줄 소개 수정 컴포넌트 */}
+              <ModifyProfile MyProfile={MyProfile} />
+            </div>
+         
+        
       </div>
 
       <hr />
@@ -140,7 +145,7 @@ function MyPage() {
         ) : (
           <React.Fragment>
             <h3 style={{ textAlign: 'center' }}>
-              내가 작성한 글 ({MyPostList.length})
+              작성한 글 ({MyPostList.length})
             </h3>
             <br />
             {renderMyPost}
@@ -148,7 +153,7 @@ function MyPage() {
         )}
       </div>
       {/* 회원 탈퇴를 위한 컴포넌트 */}
-      <DeletePage />
+      {MyProfile._id === localStorage.getItem('userId') && <DeletePage />}
     </div>
   );
 }

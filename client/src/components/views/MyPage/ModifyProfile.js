@@ -55,7 +55,13 @@ function ModifyProfile(props) {
 
   return (
     <div>
-      <div style={{ fontSize: '3rem', color: '#343a40', margin: '0 1rem 1rem 1rem' }}>
+      <div
+        style={{
+          fontSize: '3rem',
+          color: '#343a40',
+          margin: '0 1rem 1rem 1rem',
+        }}
+      >
         {ToggleModifyButton === false ? (
           MyProfile.name
         ) : (
@@ -101,13 +107,20 @@ function ModifyProfile(props) {
           />
         </div>
       )}
-
-      {ToggleModifyButton ? (
+      {props.MyProfile._id === localStorage.getItem('userId') && (
         <div>
-          <Button type='primary' onClick={onProfileSubmit}>저장</Button>
+          {ToggleModifyButton ? (
+            <div>
+              <Button type="primary" onClick={onProfileSubmit}>
+                저장
+              </Button>
+            </div>
+          ) : (
+            <Button type="default" onClick={onModifyButtonClick}>
+              수정
+            </Button>
+          )}
         </div>
-      ) : (
-        <Button type='default' onClick={onModifyButtonClick}>수정</Button>
       )}
     </div>
   );

@@ -69,7 +69,7 @@ function PostPage(props) {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between',       
+            justifyContent: 'space-between',
           }}
         >
           <Title level={2}>{Post.writer.name}`s Post</Title>
@@ -78,7 +78,6 @@ function PostPage(props) {
           style={{
             display: 'flex',
             justifyContent: 'space-between',
-            
           }}
         >
           <div style={{ display: 'flex' }}>
@@ -101,7 +100,7 @@ function PostPage(props) {
             display: 'flex',
             justifyContent: 'space-between',
             marginTop: '1rem',
-            marginRight:'1rem'
+            marginRight: '1rem',
           }}
         >
           <div>
@@ -113,10 +112,10 @@ function PostPage(props) {
                 </Tag>
               );
             })}
-            <p style={{ fontSize: '8px',marginTop: '1rem' }}>
-            {postCreatedDate} 에 작성됨
-            <br /> {postUpdatedDate}에 마지막으로 수정됨
-          </p>
+            <p style={{ fontSize: '8px', marginTop: '1rem' }}>
+              {postCreatedDate} 에 작성됨
+              <br /> {postUpdatedDate}에 마지막으로 수정됨
+            </p>
           </div>
           <PostLike postId={postId} userId={localStorage.getItem('userId')} />
         </div>
@@ -139,14 +138,16 @@ function PostPage(props) {
           }}
         >
           <div style={{ display: 'flex', margin: '4rem 0' }}>
-            <Meta
-              avatar={
-                <Avatar
-                  src={Post.writer.image}
-                  style={{ width: '150px', height: '150px' }}
-                />
-              }
-            />
+            <a href={`/mypage/${Post.writer._id}`}>
+              <Meta
+                avatar={
+                  <Avatar
+                    src={Post.writer.image}
+                    style={{ width: '150px', height: '150px' }}
+                  />
+                }
+              />
+            </a>
             <div
               style={{
                 display: 'flex',
@@ -154,8 +155,10 @@ function PostPage(props) {
                 flexDirection: 'column',
               }}
             >
-              <Title level={1}>{Post.writer.name}</Title>
-              <p style={{ color: '#868e96' }}>{Post.writer.introduce}</p>
+              <a href={`/mypage/${Post.writer._id}`}>
+                <Title level={1}>{Post.writer.name}</Title>
+                <p style={{ color: '#868e96' }}>{Post.writer.introduce}</p>
+              </a>
             </div>
           </div>
           {Post.writer._id === localStorage.getItem('userId') && (

@@ -30,7 +30,7 @@ function App() {
           <Route exact path="/search" component={Auth(SearchPage, null)} />
           <Route exact path="/board/:postId" component={Auth(PostPage, null)} />
           <Route exact path="/modify/:postId" component={Auth(BoardModify, null)} />
-          <Route exact path="/mypage" component={Auth(MyPage, true)} />
+          <Route exact path="/mypage/:userId" component={Auth(MyPage, true)} />
           <Route exact path="/tags/:tags" component={Auth(TagsPage, null)} />
         </Switch>
       </div>

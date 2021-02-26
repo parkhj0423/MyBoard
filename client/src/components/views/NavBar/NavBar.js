@@ -18,12 +18,12 @@ function NavBar() {
   return (
     <nav className="menu" style={{ position: 'fixed', zIndex: 5, width: '100%' }}>
       <div className="menu__logo">
-        <a href="/">Logo</a>
+        <a href="/"><img src='../../../../MyLogo.png' alt='Logo' style={{width:'50px', height:'50px'}}/></a>
       </div>
       <div className="menu__container">
-        <div className="menu_left">
+        {/* <div className="menu_left">
           <LeftMenu mode="horizontal" />
-        </div>
+        </div> */}
         <div className="menu_rigth">
           <RightMenu mode="horizontal" />
         </div>

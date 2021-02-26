@@ -66,13 +66,14 @@ function UploadImage(props) {
           <Avatar
             src={
               uploadedImg.filePath === undefined
-                ? props.avatarSrc
+                ? props.MyProfile.image
                 : uploadedImg.filePath
             }
             style={{ width: '128px', height: '128px' }}
           />
         }
       />
+      {props.MyProfile._id === localStorage.getItem('userId') && 
       <div
         className="filebox bs3-success"
         style={{ position: 'relative', marginTop: '1rem' }}
@@ -91,6 +92,7 @@ function UploadImage(props) {
           이미지 선택
         </label>
       </div>
+      }
       {content.name && (
         <p style={{ margin: '0' }}>
           <b>선택한 파일 : {content.name}</b>

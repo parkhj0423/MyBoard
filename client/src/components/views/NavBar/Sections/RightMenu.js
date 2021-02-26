@@ -52,7 +52,7 @@ function RightMenu(props) {
       <Menu mode={props.mode}>
         {user.userData && (
           <Menu.Item key="myPage">
-            <a href='/mypage'>
+            <a href={`/mypage/${localStorage.getItem('userId')}`}>
               <img
                 style={{ width: '30px', height: '30px', borderRadius: '20px' }}
                 src={MyPageProfile.image}
