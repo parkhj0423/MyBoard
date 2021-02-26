@@ -341,7 +341,7 @@ class Editor extends React.Component {
           let range = quill.getSelection();
           let position = range ? range.index : 0;
           quill.insertEmbed(position, 'video', {
-            src: 'http://localhost:5000/' + response.data.url,
+            src: PAGE_URL + response.data.url,
             title: response.data.fileName,
           });
           quill.setSelection(position + 1);
