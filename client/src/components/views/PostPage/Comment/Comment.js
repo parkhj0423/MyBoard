@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux'; //useSelector 는 redux hook임... react에서 import 하는거아님...
-import { Button, Typography, message, Icon } from 'antd';
+import { Typography, message, Icon } from 'antd';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import SingleComment from './SingleComment';

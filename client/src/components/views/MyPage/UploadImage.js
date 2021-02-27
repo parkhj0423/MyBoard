@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import Axios from 'axios';
 import { Button, message, Card, Avatar } from 'antd';
 import './UploadImage.css';
-import { PAGE_URL } from '../../Config';
-const { Meta } = Card;
 
+const { Meta } = Card;
 
 function UploadImage(props) {
   const [ToggleSubmit, setToggleSubmit] = useState(false);
   const [content, setContent] = useState('');
-
-  const [uploadedImg, setUploadedImg] = useState({
-    fileName: '',
-    fillPath: '',
-  });
+  const [PreviewSource, setPreviewSource] = useState();
 
   const onChange = (e) => {
+    console.log(e.target.files[0]);
+    const reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onloadend = () => {
+      setPreviewSource(reader.result);
+    };
     setContent(e.target.files[0]);
   };
 
@@ -24,39 +25,38 @@ function UploadImage(props) {
   };
 
   const onSubmit = (e) => {
-    if (content === '') {
-      message.error('이미지를 선택해주세요');
-    } else {
-      const formData = new FormData();
-      formData.append('file', content);
-      Axios.post('/api/users/uploadImage', formData)
-        .then((response) => {
-          const { fileName } = response.data;
-          console.log(fileName);
+    e.preventDefault();
 
-          setUploadedImg({
-            fileName,
-            filePath: `${PAGE_URL}uploads/${fileName}`,
-          });
-
-          Axios.post('/api/users/setImage', {
-            _id: localStorage.getItem('userId'),
-            image: `${PAGE_URL}uploads/${fileName}`,
-          }).then((response) => {
-            if (response.data.success) {
-              console.log(response.data.result);
-              message.success('Success to setImage');
-            } else {
-              message.error('Failed to setImage');
-            }
-          });
-          message.success('The file is successfully uploaded');
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+    if (!PreviewSource) {
       setToggleSubmit(!ToggleSubmit);
+      return message.error('이미지를 선택해주세요');
     }
+
+    Axios.post('/api/users/uploadImage', {
+      method: 'POST',
+      data: PreviewSource,
+    }).then((response) => {
+      if (response.data.success) {
+        message.success('Success to uploadImage');
+        console.log(response.data.url);
+
+        Axios.post('/api/users/setProfileImage', {
+          _id: localStorage.getItem('userId'),
+          image: response.data.url,
+        }).then((response) => {
+          if (response.data.success) {
+            console.log(response.data.result);
+            message.success('Success to setProfileImage');
+          } else {
+            message.error('Failed to setProfileImage');
+          }
+        });
+      } else {
+        message.error('Failed to uploadImage');
+      }
+    });
+
+    setToggleSubmit(!ToggleSubmit);
   };
 
   return (
@@ -64,11 +64,7 @@ function UploadImage(props) {
       <Meta
         avatar={
           <Avatar
-            src={
-              uploadedImg.filePath === undefined
-                ? props.MyProfile.image
-                : uploadedImg.filePath
-            }
+            src={PreviewSource ? PreviewSource : props.MyProfile.image}
             style={{ width: '128px', height: '128px' }}
           />
         }
@@ -100,13 +96,15 @@ function UploadImage(props) {
       )}
 
       {ToggleSubmit && (
-        <Button
-          type="default"
-          style={{ marginTop: '1rem', width: '128px' }}
-          onClick={onSubmit}
-        >
-          이미지 업로드
-        </Button>
+        <form encType="multipart/form-data" method="post" onSubmit={onSubmit}>
+          <Button
+            type="default"
+            style={{ marginTop: '1rem', width: '128px' }}
+            onClick={onSubmit}
+          >
+            이미지 업로드
+          </Button>
+        </form>
       )}
     </div>
   );

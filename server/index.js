@@ -1,12 +1,12 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const path = require("path");
-const cors = require('cors')
+const path = require('path');
+const cors = require('cors');
 
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
-const config = require("./config/key");
+const config = require('./config/key');
 
 // const mongoose = require("mongoose");
 // mongoose
@@ -14,20 +14,23 @@ const config = require("./config/key");
 //   .then(() => console.log("DB connected"))
 //   .catch(err => console.error(err));
 
-const mongoose = require("mongoose");
-const connect = mongoose.connect(config.mongoURI,
-  {
-    useNewUrlParser: true, useUnifiedTopology: true,
-    useCreateIndex: true, useFindAndModify: false
+const mongoose = require('mongoose');
+const connect = mongoose
+  .connect(config.mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
   })
   .then(() => console.log('MongoDB Connected...'))
-  .catch(err => console.log(err));
+  .catch((err) => console.log(err));
 
-app.use(cors())
+app.use(cors());
 
 //to not get any deprecation warning or error
 //support parsing of application/x-www-form-urlencoded post data
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit:'50mb',extended: true,parameterLimit:50000 }));
 //to get json data
 // support parsing of application/json type post data
 app.use(bodyParser.json());
@@ -41,21 +44,23 @@ app.use('/api/like', require('./routes/like'));
 //https://stackoverflow.com/questions/48914987/send-image-path-from-node-js-express-server-to-react-client
 app.use('/uploads', express.static('uploads'));
 
-// Serve static assets if in production
-if (process.env.NODE_ENV === "production") {
+// app.use(express.json({ limit: '100mb' }));
+// app.use(express.urlencoded({ limit: '100mb', extended: false }));
 
-  // Set static folder   
+// Serve static assets if in production
+if (process.env.NODE_ENV === 'production') {
+  // Set static folder
   // All the javascript and css files will be read and served from this folder
-  app.use(express.static("client/build"));
+  app.use(express.static('client/build'));
 
   // index.html for all page routes    html or routing and naviagtion
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'));
   });
 }
 
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
-  console.log(`Server Listening on ${port}`)
+  console.log(`Server Listening on ${port}`);
 });

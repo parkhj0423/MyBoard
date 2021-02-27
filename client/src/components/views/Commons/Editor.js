@@ -1,17 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import ImageResize from 'quill-image-resize-module';
 import VideoResize from 'quill-video-resize-module';
 import axios from 'axios';
-import { Button,  message } from 'antd';
-import { PAGE_URL } from '../../Config';
+import { Button, message } from 'antd';
+import { LOCAL_HOST } from '../../Config';
+
 const __ISMSIE__ = navigator.userAgent.match(/Trident/i) ? true : false;
 Quill.register('modules/imageResize', ImageResize);
 Quill.register('modules/videoResize', VideoResize);
-
-
-
 
 // Quill.register('modules/clipboard', PlainClipboard, true);
 const QuillClipboard = Quill.import('modules/clipboard');
@@ -234,7 +232,7 @@ class Editor extends React.Component {
   }
 
   handleClick() {
-    message.success('포스팅을 불러왔습니다!')
+    message.success('포스팅을 불러왔습니다!');
     let editor = document.getElementsByClassName('ql-editor');
     editor[0].innerHTML = this.props.textValue;
   }
@@ -257,13 +255,13 @@ class Editor extends React.Component {
     this.inputOpenImageRef.current.click();
   };
 
-  videoHandler = () => {
-    this.inputOpenVideoRef.current.click();
-  };
+  // videoHandler = () => {
+  //   this.inputOpenVideoRef.current.click();
+  // };
 
-  fileHandler = () => {
-    this.inputOpenFileRef.current.click();
-  };
+  // fileHandler = () => {
+  //   this.inputOpenFileRef.current.click();
+  // };
 
   insertImage = (e) => {
     e.stopPropagation();
@@ -274,137 +272,137 @@ class Editor extends React.Component {
       e.currentTarget.files &&
       e.currentTarget.files.length > 0
     ) {
-      const file = e.currentTarget.files[0];
-      console.log(file);
+      const reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      
+      reader.onloadend = () => {
+        console.log(reader.result)
+        
+        axios
+        .post('/api/post/uploadfiles', { method: 'POST', data: reader.result })
+        .then((response) => {
+          if (response.data.success) {
+            console.log(response.data.url);
+            const quill = this.reactQuillRef.getEditor();
+            quill.focus();
+            let range = quill.getSelection();
+            let position = range ? range.index : 0;
 
-      let formData = new FormData();
-      const config = {
-        header: { 'content-type': 'multipart/form-data' },
-      };
-      formData.append('file', file);
+            //먼저 노드 서버에다가 이미지를 넣은 다음에   여기 아래에 src에다가 그걸 넣으면 그게
+            //이미지 블롯으로 가서  크리에이트가 이미지를 형성 하며 그걸 발류에서 src 랑 alt 를 가져간후에  editorHTML에 넣는다.
+            quill.insertEmbed(position, 'image', {
+              src: response.data.url,
+              alt: 'editor_image',
+            });
+            quill.setSelection(position + 1);
 
-      axios.post('/api/post/uploadfiles', formData, config).then((response) => {
-        if (response.data.success) {
-          const quill = this.reactQuillRef.getEditor();
-          quill.focus();
-
-          let range = quill.getSelection();
-          let position = range ? range.index : 0;
-
-          //먼저 노드 서버에다가 이미지를 넣은 다음에   여기 아래에 src에다가 그걸 넣으면 그게
-          //이미지 블롯으로 가서  크리에이트가 이미지를 형성 하며 그걸 발류에서 src 랑 alt 를 가져간후에  editorHTML에 넣는다.
-          quill.insertEmbed(position, 'image', {
-            src: PAGE_URL + response.data.url,
-            alt: response.data.fileName,
-          });
-          quill.setSelection(position + 1);
-
-          if (this._isMounted) {
-            this.setState(
-              {
-                files: [...this.state.files, file],
-              },
-              () => {
-                this.props.onFilesChange(this.state.files);
-              },
-            );
+            if (this._isMounted) {
+              this.setState(
+                {
+                  files: [...this.state.files, response.data.url],
+                },
+                () => {
+                  this.props.onFilesChange(this.state.files);
+                },
+              );
+            }
+          } else {
+            return alert('failed to upload image');
           }
-        } else {
-          return alert('failed to upload image');
-        }
-      });
+        });
+      };     
     }
   };
 
-  insertVideo = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
+  // insertVideo = (e) => {
+  //   e.stopPropagation();
+  //   e.preventDefault();
 
-    if (
-      e.currentTarget &&
-      e.currentTarget.files &&
-      e.currentTarget.files.length > 0
-    ) {
-      const file = e.currentTarget.files[0];
+  //   if (
+  //     e.currentTarget &&
+  //     e.currentTarget.files &&
+  //     e.currentTarget.files.length > 0
+  //   ) {
+  //     const file = e.currentTarget.files[0];
 
-      let formData = new FormData();
-      const config = {
-        header: { 'content-type': 'multipart/form-data' },
-      };
-      formData.append('file', file);
+  //     let formData = new FormData();
+  //     const config = {
+  //       header: { 'content-type': 'multipart/form-data' },
+  //     };
+  //     formData.append('file', file);
 
-      axios.post('/api/post/uploadfiles', formData, config).then((response) => {
-        if (response.data.success) {
-          const quill = this.reactQuillRef.getEditor();
-          quill.focus();
+  //     axios.post('/api/post/uploadfiles', formData, config).then((response) => {
+  //       if (response.data.success) {
+  //         const quill = this.reactQuillRef.getEditor();
+  //         quill.focus();
 
-          let range = quill.getSelection();
-          let position = range ? range.index : 0;
-          quill.insertEmbed(position, 'video', {
-            src: PAGE_URL + response.data.url,
-            title: response.data.fileName,
-          });
-          quill.setSelection(position + 1);
+  //         let range = quill.getSelection();
+  //         let position = range ? range.index : 0;
+  //         quill.insertEmbed(position, 'video', {
+  //           src: LOCAL_HOST + response.data.url,
+  //           title: response.data.fileName,
+  //         });
+  //         quill.setSelection(position + 1);
 
-          if (this._isMounted) {
-            this.setState(
-              {
-                files: [...this.state.files, file],
-              },
-              () => {
-                this.props.onFilesChange(this.state.files);
-              },
-            );
-          }
-        } else {
-          return alert('failed to upload video');
-        }
-      });
-    }
-  };
+  //         if (this._isMounted) {
+  //           this.setState(
+  //             {
+  //               files: [...this.state.files, file],
+  //             },
+  //             () => {
+  //               this.props.onFilesChange(this.state.files);
+  //             },
+  //           );
+  //         }
+  //       } else {
+  //         return alert('failed to upload video');
+  //       }
+  //     });
+  //   }
+  // };
 
-  insertFile = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
+  // insertFile = (e) => {
+  //   e.stopPropagation();
+  //   e.preventDefault();
 
-    if (
-      e.currentTarget &&
-      e.currentTarget.files &&
-      e.currentTarget.files.length > 0
-    ) {
-      const file = e.currentTarget.files[0];
-      console.log(file);
+  //   if (
+  //     e.currentTarget &&
+  //     e.currentTarget.files &&
+  //     e.currentTarget.files.length > 0
+  //   ) {
+  //     const file = e.currentTarget.files[0];
+  //     console.log(file);
 
-      let formData = new FormData();
-      const config = {
-        header: { 'content-type': 'multipart/form-data' },
-      };
-      formData.append('file', file);
+  //     let formData = new FormData();
+  //     const config = {
+  //       header: { 'content-type': 'multipart/form-data' },
+  //     };
+  //     formData.append('file', file);
 
-      axios.post('/api/post/uploadfiles', formData, config).then((response) => {
-        if (response.data.success) {
-          const quill = this.reactQuillRef.getEditor();
-          quill.focus();
+  //     axios.post('/api/post/uploadfiles', formData, config).then((response) => {
+  //       if (response.data.success) {
+  //         const quill = this.reactQuillRef.getEditor();
+  //         quill.focus();
 
-          let range = quill.getSelection();
-          let position = range ? range.index : 0;
-          quill.insertEmbed(position, 'file', response.data.fileName);
-          quill.setSelection(position + 1);
+  //         let range = quill.getSelection();
+  //         let position = range ? range.index : 0;
+  //         quill.insertEmbed(position, 'file', response.data.fileName);
+  //         quill.setSelection(position + 1);
 
-          if (this._isMounted) {
-            this.setState(
-              {
-                files: [...this.state.files, file],
-              },
-              () => {
-                this.props.onFilesChange(this.state.files);
-              },
-            );
-          }
-        }
-      });
-    }
-  };
+  //         if (this._isMounted) {
+  //           this.setState(
+  //             {
+  //               files: [...this.state.files, file],
+  //             },
+  //             () => {
+  //               this.props.onFilesChange(this.state.files);
+  //             },
+  //           );
+  //         }
+  //       }
+  //     });
+  //   }
+  // };
 
   render() {
     return (
@@ -424,14 +422,18 @@ class Editor extends React.Component {
           <button className="ql-underline" />
           <button className="ql-strike" />
           <button className="ql-insertImage">I</button>
-          <button className="ql-insertVideo">V</button>
-          <button className="ql-insertFile">F</button>
+          {/* <button className="ql-insertVideo">V</button> */}
+          {/* <button className="ql-insertFile">F</button> */}
           <button className="ql-link" />
           <button className="ql-code-block" />
           <button className="ql-video" />
           <button className="ql-blockquote" />
           <button className="ql-clean" />
-          {this.props.textValue && <Button type='dashed' id="custom-button" onClick={this.handleClick}>Load</Button>}
+          {this.props.textValue && (
+            <Button type="dashed" id="custom-button" onClick={this.handleClick}>
+              Load
+            </Button>
+          )}
         </div>
         <ReactQuill
           style={{ width: '100%', height: '400px' }}

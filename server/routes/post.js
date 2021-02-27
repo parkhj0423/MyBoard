@@ -3,6 +3,10 @@ const router = express.Router();
 const { Post } = require('../models/Post');
 const { auth } = require('../middleware/auth');
 
+//https://www.npmjs.com/package/dotenv
+const cloudinary = require('cloudinary');
+require('dotenv').config();
+
 const multer = require('multer');
 
 // STORAGE MULTER CONFIG
@@ -56,16 +60,15 @@ router.post('/getPost', (req, res) => {
     });
 });
 
-router.post('/uploadfiles', (req, res) => {
-  upload(req, res, (err) => {
-    if (err) {
-      return res.json({ success: false, err });
+router.post('/uploadfiles', async (req, res) => {
+  const fileStr = req.body.data;
+
+  await cloudinary.uploader.upload(fileStr, (result, err) => {
+    if (result.public_id) {
+      return res.status(200).json({ success: true, url: result.url });
+    } else {
+      return res.status(400).send(err);
     }
-    return res.json({
-      success: true,
-      url: res.req.file.path,
-      fileName: res.req.file.filename,
-    });
   });
 });
 
@@ -128,7 +131,5 @@ router.post('/setPostLikeNumber', (req, res) => {
     return res.status(200).json({ success: true, result });
   });
 });
-
-
 
 module.exports = router;
