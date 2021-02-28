@@ -103,7 +103,7 @@ function LandingPage(props) {
                 <Meta
                   avatar={<Avatar src={postlist.writer.image} />}
                   title={
-                    <b style={{ fontSize: '0.7rem', lineHeight: '1.5' }}>
+                    <b style={{ fontSize: '0.7rem', marginLeft:'0.5rem' }}>
                       {postlist.writer.name}
                     </b>
                   }
