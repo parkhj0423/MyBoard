@@ -163,6 +163,7 @@ function PostPage(props) {
                 display: 'flex',
                 justifyContent: 'center',
                 flexDirection: 'column',
+                marginLeft:'1rem'
               }}
             >
               <a href={`/mypage/${Post.writer._id}`}>

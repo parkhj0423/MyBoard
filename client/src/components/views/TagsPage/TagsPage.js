@@ -41,18 +41,20 @@ function TagsPage(props) {
             justifyContent: 'flex-start',
           }}
         >
-          <a href={`/board/${list._id}`}>
-            <img
-              style={{ width: '300px', height: '167px' }}
-              alt="thumbnail"
-              src={
-                imageUrl
-                  ? imageUrl
-                  : 'https://media.giphy.com/media/l3vRdNUR4XPpRoPmM/giphy.gif'
-              }
-            />
-          </a>
-          <div style={{ marginLeft: '2rem' }}>
+          <div style={{ maxWidth: '300px' }}>
+            <a href={`/board/${list._id}`}>
+              <img
+                style={{ width: '100%', height: '167px' }}
+                alt="thumbnail"
+                src={
+                  imageUrl
+                    ? imageUrl
+                    : 'https://media.giphy.com/media/l3vRdNUR4XPpRoPmM/giphy.gif'
+                }
+              />
+            </a>
+          </div>
+          <div style={{ margin: '1rem 0 0 2rem' }}>
             <List.Item.Meta
               avatar={<Avatar src={list.writer.image} />}
               title={
