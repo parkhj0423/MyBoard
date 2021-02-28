@@ -6,7 +6,7 @@ import { USER_SERVER } from '../../../Config';
 import { withRouter } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Axios from 'axios';
-import { message, Icon } from 'antd';
+import { message } from 'antd';
 import './Button.css';
 function RightMenu(props) {
   const user = useSelector((state) => state.user);
@@ -15,13 +15,15 @@ function RightMenu(props) {
     let variable = {
       _id: localStorage.getItem('userId'),
     };
-    Axios.post('/api/users/getUserInfo', variable).then((response) => {
-      if (response.data.success) {
-        setMyPageProfile(response.data.result[0]);
-      } else {
-        message.error('Failed to getInfo');
-      }
-    });
+    if (localStorage.getItem('userId') !== '') {
+      Axios.post('/api/users/getUserInfo', variable).then((response) => {
+        if (response.data.success) {
+          setMyPageProfile(response.data.result[0]);
+        } else {
+          message.error('Failed to getInfo');
+        }
+      });
+    }
   }, []);
 
   const logoutHandler = () => {
@@ -71,7 +73,11 @@ function RightMenu(props) {
           <Menu.Item key="myPage">
             <a href={`/mypage/${localStorage.getItem('userId')}`}>
               <img
-                style={{ width: '2.25rem', height: '2.25rem', borderRadius: '20px' }}
+                style={{
+                  width: '2.25rem',
+                  height: '2.25rem',
+                  borderRadius: '20px',
+                }}
                 src={MyPageProfile.image}
                 alt="MyPageImage"
               />

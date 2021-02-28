@@ -59,7 +59,7 @@ function ModifyProfile(props) {
         style={{
           fontSize: '3rem',
           color: '#343a40',
-          margin: '0 1rem 1rem 1rem',
+          margin: '1.75rem',
         }}
       >
         {ToggleModifyButton === false ? (
@@ -83,12 +83,12 @@ function ModifyProfile(props) {
 
       {MyProfile.introduce && ToggleModifyButton === false ? (
         <div>
-          <p style={{ color: '#868e96', fontSize: '1rem', margin: '1rem' }}>
+          <p style={{ color: '#868e96', fontSize: '1rem', margin: '1rem',textAlign:'center' }}>
             {MyProfile.introduce}
           </p>
         </div>
       ) : (
-        <div className="group" style={{ margin: '1rem' }}>
+        <div className="group" style={{ margin: '2rem' }}>
           <input
             type="text"
             required
@@ -109,7 +109,7 @@ function ModifyProfile(props) {
       )}
       {props.MyProfile._id === localStorage.getItem('userId') &&
         props.MyProfile.introduce !== '' && (
-          <div>
+          <div style={{display:'flex',justifyContent:'center'}}>
             {ToggleModifyButton ? (
               <div>
                 <Button type="primary" onClick={onProfileSubmit}>

@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { Carousel, Typography, Icon, Row, Col, Avatar, Card, Tag } from 'antd';
 import Axios from 'axios';
 import Pagination from './pagination';
+
 const { Title } = Typography;
 const { Meta } = Card;
 function LandingPage(props) {
@@ -35,7 +36,6 @@ function LandingPage(props) {
     Axios.post('/api/comment/getCommentsLength').then((response) => {
       if (response.data.success) {
         setComments(response.data.comments);
-        console.log(response.data.comments);
       } else {
         alert('댓글 가져오기 실패!');
       }
@@ -178,13 +178,13 @@ function LandingPage(props) {
               type="search"
               theme="outlined"
               onClick={() => props.history.push('/search')}
-              style={{ fontSize: '40px', marginRight: '20px' }}
+              style={{ fontSize: '40px', marginRight: '20px',zIndex:'2'}}
             />
             <Icon
               type="plus-circle"
               theme="outlined"
               onClick={() => props.history.push('/upload')}
-              style={{ fontSize: '40px' }}
+              style={{ fontSize: '40px',zIndex:'2' }}
             />
           </div>
         </div>

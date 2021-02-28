@@ -5,15 +5,14 @@ import { Avatar, Tag, message, List, Empty } from 'antd';
 import DeletePage from '../DeletePage/DeletePage';
 import UploadImage from './UploadImage';
 import ModifyProfile from './ModifyProfile';
-
+import './MyProfileMedia.css'
 function MyPage(props) {
-  const userId = props.match.params.userId
-  
+  const userId = props.match.params.userId;
+
   const [MyPostList, setMyPostList] = useState([]);
   const [MyProfile, setMyProfile] = useState([]);
 
   useEffect(() => {
-    
     let variable = {
       writer: userId,
     };
@@ -52,18 +51,20 @@ function MyPage(props) {
             justifyContent: 'flex-start',
           }}
         >
-          <a href={`/board/${list._id}`}>
-            <img
-              style={{ width: '300px', height: '167px' }}
-              alt="thumbnail"
-              src={
-                imageUrl
-                  ? imageUrl
-                  : 'https://media.giphy.com/media/l3vRdNUR4XPpRoPmM/giphy.gif'
-              }
-            />
-          </a>
-          <div style={{ marginLeft: '2rem' }}>
+          <div style={{maxWidth:'300px'}}>
+            <a href={`/board/${list._id}`}>
+              <img
+                style={{ width: '100%', height: '167px' }}
+                alt="thumbnail"
+                src={
+                  imageUrl
+                    ? imageUrl
+                    : 'https://media.giphy.com/media/l3vRdNUR4XPpRoPmM/giphy.gif'
+                }
+              />
+            </a>
+          </div>
+          <div style={{ margin: '2rem 0 0 2rem' }}>
             <List.Item.Meta
               avatar={<Avatar src={list.writer.image} />}
               title={
@@ -93,28 +94,25 @@ function MyPage(props) {
   return (
     <div style={{ width: '70%', margin: '0 auto' }}>
       <div
-        style={{ margin: '5rem 0', display: 'flex', justifyContent: 'center' }}
+      className='myProfile'
+        style={{ margin: '5rem 0', display: 'flex', justifyContent: 'center',alignItems:'center' }}
       >
-        
-        
-            <div>
-              {/* 프로필 사진 이미지 업로드 컴포넌트 */}
-              <UploadImage MyProfile={MyProfile}/>
-            </div>
-            <div
-              style={{
-                marginLeft: '1rem',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              {/* 이름, 한 줄 소개 수정 컴포넌트 */}
-              <ModifyProfile MyProfile={MyProfile} />
-            </div>
-         
-        
+        <div>
+          {/* 프로필 사진 이미지 업로드 컴포넌트 */}
+          <UploadImage MyProfile={MyProfile} />
+        </div>
+        <div
+          style={{
+            marginLeft: '1rem',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          {/* 이름, 한 줄 소개 수정 컴포넌트 */}
+          <ModifyProfile MyProfile={MyProfile} />
+        </div>
       </div>
-
+       
       <hr />
       <div
         style={{
@@ -143,7 +141,7 @@ function MyPage(props) {
         ) : (
           <React.Fragment>
             <h3 style={{ textAlign: 'center' }}>
-              작성한 글 ({MyPostList.length})
+              {MyPostList.length}개의 포스트가 있습니다
             </h3>
             <br />
             {renderMyPost}

@@ -43,7 +43,7 @@ function UploadImage(props) {
         avatar={
           <Avatar
             src={PreviewSource ? PreviewSource : props.MyProfile.image}
-            style={{ width: '128px', height: '128px' }}
+            style={{ width: '128px', height: '128px'}}
           />
         }
       />

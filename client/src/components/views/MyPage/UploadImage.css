@@ -23,3 +23,8 @@
   background-color: #5cb85c;
   border-color: #4cae4c;
 }
+
+
+.ant-card-meta-avatar {
+  padding: 0;
+}
