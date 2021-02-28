@@ -51,6 +51,7 @@ router.post('/getPost', (req, res) => {
   }
 
   Post.find(variable)
+    .sort('-createdAt')
     .populate('writer')
     .exec((err, result) => {
       if (err) {

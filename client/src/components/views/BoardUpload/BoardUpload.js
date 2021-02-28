@@ -107,7 +107,7 @@ function BoardUpload(props) {
       </Select>
 
       <br />
-      <div style={{ width: '50%' }}>
+      <div style={{ width: '85%' }}>
         <Editor
           placeholder={'Start Posting Something'}
           onEditorChange={onEditorChange}

@@ -20,7 +20,6 @@ function MyPage(props) {
     Axios.post('/api/post/getPost', variable).then((response) => {
       if (response.data.success) {
         setMyPostList(response.data.result);
-        console.log(response.data.result);
       } else {
         message.error('Failed to get Posts!');
       }
@@ -30,7 +29,6 @@ function MyPage(props) {
       _id: userId,
     }).then((response) => {
       if (response.data.success) {
-        console.log(response.data.result[0]);
         setMyProfile(response.data.result[0]);
       } else {
         message.error('Failed to get UserInfo');

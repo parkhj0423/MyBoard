@@ -82,8 +82,8 @@ function SingleComment(props) {
       {props.comment.writer && (
         <Comment
           actions={actions}
-          author={<h3>{props.comment.writer.name}</h3>}
-          avatar={<Avatar src={props.comment.writer.image} alt="avatarImage" />}
+          author={<a href={`/mypage/${props.comment.writer._id}`}><h3>{props.comment.writer.name}</h3></a>}
+          avatar={<a href={`/mypage/${props.comment.writer._id}`}><Avatar src={props.comment.writer.image} alt="avatarImage" /></a>}
           content={<p>{props.comment.text}</p>}
         />
       )}

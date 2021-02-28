@@ -102,11 +102,18 @@ function LandingPage(props) {
               >
                 <Meta
                   avatar={<Avatar src={postlist.writer.image} />}
-                  title={<b style={{fontSize:'0.7rem',lineHeight:'1.5'}}>{postlist.writer.name}</b>}
-                  
+                  title={
+                    <b style={{ fontSize: '0.7rem', lineHeight: '1.5' }}>
+                      {postlist.writer.name}
+                    </b>
+                  }
                 />
                 <div>
-                  <Icon type="heart" theme={'filled'} style={{marginRight:'0.25rem'}}/>
+                  <Icon
+                    type="heart"
+                    theme={'filled'}
+                    style={{ marginRight: '0.25rem' }}
+                  />
                   {postlist.likes}
                 </div>
               </div>,
@@ -144,10 +151,6 @@ function LandingPage(props) {
             >
               {postCreatedDate} 에 작성됨 ● {postComment.length} 개의 댓글
             </p>
-
-            {/* <div style={{ height: '150px', overflowY: 'scroll', marginTop: 10 }}>
-            <div dangerouslySetInnerHTML={{ __html: postlist.text }} />
-          </div> */}
           </Card>
         </a>
       </Col>
@@ -156,7 +159,7 @@ function LandingPage(props) {
 
   return (
     <div>
-      <Carousel autoplay dotPosition="top">
+      <Carousel autoplay dotPosition="top" style={{ height: '300px' }}>
         <div>
           <h3 style={contentStyle}>Welcome!</h3>
         </div>

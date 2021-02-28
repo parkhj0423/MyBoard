@@ -72,7 +72,7 @@ function PostPage(props) {
             justifyContent: 'space-between',
           }}
         >
-          <Title level={2}>{Post.writer.name}`s Post</Title>
+          <Title level={1}>{Post.writer.name}`s Post</Title>
         </div>
         <div
           style={{
@@ -80,13 +80,23 @@ function PostPage(props) {
             justifyContent: 'space-between',
           }}
         >
-          <div style={{ display: 'flex' }}>
+          <div >
+            <div style={{ display: 'flex' }}>
             <Icon
               type="notification"
               theme="outlined"
-              style={{ fontSize: '25px', marginRight: '1rem' }}
+              style={{ fontSize: '2.5rem', marginRight: '1rem' }}
             />
-            <Title level={4}>{Post.title}</Title>
+            <h1 >{Post.title}</h1>
+            </div>
+            <div style={{ display: 'flex' }}>
+            <Icon
+              type="pushpin"
+              theme="outlined"
+              style={{ fontSize: '1.5rem', marginRight: '1rem' }}
+            />
+            <h3>{Post.description}</h3>
+            </div>
           </div>
 
           {Post.writer._id === localStorage.getItem('userId') && (
@@ -101,7 +111,7 @@ function PostPage(props) {
             justifyContent: 'space-between',
             marginTop: '1rem',
             marginRight: '1rem',
-          }}
+          }}  
         >
           <div>
             {Post.tags.map((tags, index) => {

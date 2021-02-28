@@ -107,21 +107,22 @@ function ModifyProfile(props) {
           />
         </div>
       )}
-      {props.MyProfile._id === localStorage.getItem('userId') && (
-        <div>
-          {ToggleModifyButton ? (
-            <div>
-              <Button type="primary" onClick={onProfileSubmit}>
-                저장
+      {props.MyProfile._id === localStorage.getItem('userId') &&
+        props.MyProfile.introduce !== '' && (
+          <div>
+            {ToggleModifyButton ? (
+              <div>
+                <Button type="primary" onClick={onProfileSubmit}>
+                  저장
+                </Button>
+              </div>
+            ) : (
+              <Button type="default" onClick={onModifyButtonClick}>
+                수정
               </Button>
-            </div>
-          ) : (
-            <Button type="default" onClick={onModifyButtonClick}>
-              수정
-            </Button>
-          )}
-        </div>
-      )}
+            )}
+          </div>
+        )}
     </div>
   );
 }

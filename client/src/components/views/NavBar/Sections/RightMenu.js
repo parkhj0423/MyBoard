@@ -6,8 +6,8 @@ import { USER_SERVER } from '../../../Config';
 import { withRouter } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Axios from 'axios';
-import { message } from 'antd';
-
+import { message, Icon } from 'antd';
+import './Button.css';
 function RightMenu(props) {
   const user = useSelector((state) => state.user);
   const [MyPageProfile, setMyPageProfile] = useState('');
@@ -35,15 +35,32 @@ function RightMenu(props) {
     });
   };
 
-
   if (user.userData && !user.userData.isAuth) {
     return (
       <Menu mode={props.mode}>
         <Menu.Item key="mail">
-          <a href="/login">Signin</a>
+          <a href="/login">
+            <div id="container">
+              <button className="learn-more">
+                <span className="circle" aria-hidden="true">
+                  <span className="icon arrow"></span>
+                </span>
+                <span className="button-text">로그인</span>
+              </button>
+            </div>
+          </a>
         </Menu.Item>
         <Menu.Item key="app">
-          <a href="/register">Signup</a>
+          <a href="/register">
+            <div id="container">
+              <button className="learn-more">
+                <span className="circle" aria-hidden="true">
+                  <span className="icon arrow"></span>
+                </span>
+                <span className="button-text">회원 가입</span>
+              </button>
+            </div>
+          </a>
         </Menu.Item>
       </Menu>
     );
@@ -54,7 +71,7 @@ function RightMenu(props) {
           <Menu.Item key="myPage">
             <a href={`/mypage/${localStorage.getItem('userId')}`}>
               <img
-                style={{ width: '30px', height: '30px', borderRadius: '20px' }}
+                style={{ width: '2.25rem', height: '2.25rem', borderRadius: '20px' }}
                 src={MyPageProfile.image}
                 alt="MyPageImage"
               />
@@ -62,7 +79,16 @@ function RightMenu(props) {
           </Menu.Item>
         )}
         <Menu.Item key="logout">
-          <a onClick={logoutHandler}>Logout</a>
+          <a onClick={logoutHandler}>
+            <div id="container">
+              <button className="learn-more">
+                <span className="circle" aria-hidden="true">
+                  <span className="icon arrow"></span>
+                </span>
+                <span className="button-text">로그 아웃</span>
+              </button>
+            </div>
+          </a>
         </Menu.Item>
       </Menu>
     );

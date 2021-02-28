@@ -12,10 +12,18 @@ function Footer() {
         fontSize: '0.75rem',
       }}
     >
-      <div style={{marginTop:'0.5rem'}}>
-        <Icon type="mail" theme="filled" /> parkhj0423@naver.com
+      <div style={{ marginTop: '0.5rem' }}>
+        <Icon type="mail" theme="filled" /> &nbsp; parkhj0423@naver.com
         <br />
-        <a href='https://github.com/parkhj0423'><Icon type="github" theme="filled" style={{ fontSize: '2rem',color:'black' }} /></a>
+        <a href="https://github.com/parkhj0423">
+          <Icon
+            type="github"
+            theme="filled"
+            style={{ fontSize: '2rem', color: 'black' }}
+          />
+        </a>
+        <br />
+        Copyright 2021.parkhyunwoo All rights reserved.
       </div>
     </div>
   );
