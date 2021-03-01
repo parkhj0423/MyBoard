@@ -57,9 +57,9 @@ function ModifyProfile(props) {
     <div>
       <div
         style={{
-          fontSize: '3rem',
+          fontSize: '2rem',
           color: '#343a40',
-          margin: '1.75rem',
+          margin: '1.75rem 1.75rem 1.75rem 1rem',
         }}
       >
         {ToggleModifyButton === false ? (
@@ -83,7 +83,7 @@ function ModifyProfile(props) {
 
       {MyProfile.introduce && ToggleModifyButton === false ? (
         <div>
-          <p style={{ color: '#868e96', fontSize: '1rem', margin: '1rem',textAlign:'center' }}>
+          <p style={{ color: '#868e96', fontSize: '0.75rem', margin: '1rem',textAlign:'center' }}>
             {MyProfile.introduce}
           </p>
         </div>

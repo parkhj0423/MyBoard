@@ -5,6 +5,7 @@ import Axios from 'axios';
 import { Icon, Tag, Popconfirm, message, Avatar, Card } from 'antd';
 import Comment from './Comment/Comment';
 import PostLike from './PostLike';
+import './PostPage.css'
 const { Title } = Typography;
 const { Meta } = Card;
 function PostPage(props) {
@@ -72,7 +73,7 @@ function PostPage(props) {
             justifyContent: 'space-between',
           }}
         >
-          <Title level={1}>{Post.writer.name}`s Post</Title>
+          <h1 className='postPageName'><b>{Post.writer.name}님의 게시글</b></h1>
         </div>
         <div
           style={{
@@ -81,27 +82,29 @@ function PostPage(props) {
           }}
         >
           <div >
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex',alignItems:'center' }}>
             <Icon
+            className='postPageTitle'
               type="notification"
               theme="outlined"
               style={{ fontSize: '2.5rem', marginRight: '1rem' }}
             />
-            <h1 >{Post.title}</h1>
+            <h1 className='postPageTitle'><b>{Post.title}</b></h1>
             </div>
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex',alignItems:'center' }}>
             <Icon
+              className='postPageDescription'
               type="pushpin"
               theme="outlined"
               style={{ fontSize: '1.5rem', marginRight: '1rem' }}
             />
-            <h3>{Post.description}</h3>
+            <h3 className='postPageDescription'>{Post.description}</h3>
             </div>
           </div>
 
           {Post.writer._id === localStorage.getItem('userId') && (
             <a href={`/modify/${postId}`} property={Post}>
-              <Icon type="edit" theme="filled" style={{ fontSize: '2.5rem' }} />
+              <Icon className='editIcon'type="edit" theme="filled" style={{ fontSize: '2.5rem' }} />
             </a>
           )}
         </div>
@@ -132,10 +135,11 @@ function PostPage(props) {
         <hr />
         <br />
         <div
+         className='postText'
           style={{
             background: '#faf7f7',
             padding: '3em',
-            borderRadius: '35px',
+            borderRadius: '25px',
           }}
         >
           <div dangerouslySetInnerHTML={{ __html: Post.text }} />
@@ -167,8 +171,8 @@ function PostPage(props) {
               }}
             >
               <a href={`/mypage/${Post.writer._id}`}>
-                <Title level={1}>{Post.writer.name}</Title>
-                <p style={{ color: '#868e96' }}>{Post.writer.introduce}</p>
+                <Title level={2}>{Post.writer.name}</Title>
+                <p style={{ color: '#868e96',fontSize:'0.75rem' }}>{Post.writer.introduce}</p>
               </a>
             </div>
           </div>

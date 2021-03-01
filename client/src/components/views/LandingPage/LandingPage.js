@@ -10,7 +10,7 @@ function LandingPage(props) {
   const contentStyle = {
     height: '300px',
     lineHeight: '300px',
-    fontSize: '40px',
+    fontSize: '30px',
     color: '#fff',
     textAlign: 'center',
     background: '#292928',
@@ -164,7 +164,7 @@ function LandingPage(props) {
           <h3 style={contentStyle}>Welcome!</h3>
         </div>
         <div>
-          <h3 style={contentStyle}>How's your daily Life?</h3>
+          <h3 style={contentStyle}>How was your day?</h3>
         </div>
         <div>
           <h3 style={contentStyle}>Write it Now!</h3>
@@ -172,7 +172,7 @@ function LandingPage(props) {
       </Carousel>
       <div style={{ width: '85%', margin: '3rem auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Title level={1}>Posts!</Title>
+          <Title level={2}>게시글</Title>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Icon
               type="search"

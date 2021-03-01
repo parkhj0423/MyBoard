@@ -5,7 +5,7 @@ import { Avatar, Tag, message, List, Empty } from 'antd';
 import DeletePage from '../DeletePage/DeletePage';
 import UploadImage from './UploadImage';
 import ModifyProfile from './ModifyProfile';
-import './MyProfileMedia.css'
+import './MyProfileMedia.css';
 function MyPage(props) {
   const userId = props.match.params.userId;
 
@@ -44,17 +44,20 @@ function MyPage(props) {
     return (
       <List key={index} itemLayout="horizontal">
         <List.Item
+        className='myPageListItem'
           style={{
             display: 'flex',
-            width: '80%',
+            width: '100%',
             margin: '0 auto',
             justifyContent: 'flex-start',
+            paddingLeft:'1rem'
           }}
         >
-          <div style={{maxWidth:'300px'}}>
+          <div style={{ maxWidth: '100%' }}>
             <a href={`/board/${list._id}`}>
               <img
-                style={{ width: '100%', height: '167px' }}
+                className="myPagePostImage"
+                style={{ width: '300px', height: '167px' }}
                 alt="thumbnail"
                 src={
                   imageUrl
@@ -64,17 +67,16 @@ function MyPage(props) {
               />
             </a>
           </div>
-          <div style={{ margin: '2rem 0 0 2rem' }}>
+          <div style={{ margin: '1rem 0 0 1rem' }}>
             <List.Item.Meta
               avatar={<Avatar src={list.writer.image} />}
               title={
                 <a href={`/board/${list._id}`}>
-                  <h2>
+                  <h2 style={{ marginTop: '0.25rem' }}>
                     <b>{list.title}</b>
                   </h2>
                 </a>
               }
-              description={<h4>{list.writer.name}</h4>}
             />
             <h3 style={{ color: ' ' }}>{list.description}</h3>
             {list.tags.map((tags, index) => {
@@ -92,10 +94,15 @@ function MyPage(props) {
   });
 
   return (
-    <div style={{ width: '70%', margin: '0 auto' }}>
+    <div className="myPagePost" style={{ width: '70%', margin: '0 auto' }}>
       <div
-      className='myProfile'
-        style={{ margin: '5rem 0', display: 'flex', justifyContent: 'center',alignItems:'center' }}
+        className="myProfile"
+        style={{
+          margin: '5rem 0',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
       >
         <div>
           {/* 프로필 사진 이미지 업로드 컴포넌트 */}
@@ -112,7 +119,7 @@ function MyPage(props) {
           <ModifyProfile MyProfile={MyProfile} />
         </div>
       </div>
-       
+
       <hr />
       <div
         style={{
@@ -140,7 +147,7 @@ function MyPage(props) {
           </div>
         ) : (
           <React.Fragment>
-            <h3 style={{ textAlign: 'center' }}>
+            <h3 style={{ textAlign: 'center', marginTop: '1rem' }}>
               {MyPostList.length}개의 포스트가 있습니다
             </h3>
             <br />

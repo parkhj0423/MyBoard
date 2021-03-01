@@ -2,4 +2,13 @@
     .myProfile {
         flex-direction: column;
     }
+    .myPagePost {
+        width: 90% !important;
+    }
+    .myPagePostImage {
+        width: 100% !important;
+    }
+    .myPageListItem {
+        padding-left: 0 !important;
+    }
 }
