@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Icon, message } from 'antd';
 import Axios from 'axios';
 import { withRouter } from 'react-router-dom';
+import './PostPage.css';
 function PostLike(props) {
   const [Likes, setLikes] = useState(0);
   const [LikeAction, setLikeAction] = useState(null);
@@ -51,7 +52,6 @@ function PostLike(props) {
             likes: Likes + 1,
           }).then((response) => {
             if (response.data.success) {
-              
             } else {
               message.error('좋아요 수 업로드 실패');
             }
@@ -71,7 +71,6 @@ function PostLike(props) {
             likes: Likes - 1,
           }).then((response) => {
             if (response.data.success) {
-              
             } else {
               message.error('좋아요 수 업로드 실패');
             }
@@ -84,15 +83,17 @@ function PostLike(props) {
   };
 
   return (
-    <div style={{display:'flex',flexDirection:'column'}}>
+    <div style={{ display: 'flex', flexDirection: 'column', }}>
       <Icon
+        className="Icon"
         type="heart"
         theme={LikeAction === 'liked' ? 'filled' : 'outlined'}
         onClick={onLike}
-        style={{ fontSize: '2.5rem' }}
+        style={{ fontSize: '2rem',textAlign:'right' }}
       />
-      {Likes} 개의 좋아요
+      <b>{Likes} 개의 좋아요</b>
     </div>
+    
   );
 }
 

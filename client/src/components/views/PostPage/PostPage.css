@@ -1,4 +1,4 @@
-@media only screen and (max-width: 768px) {
+@media(max-width: 768px) {
   .postPageName {
     font-size: 1.5rem;
   }
@@ -6,13 +6,17 @@
     font-size: 1.25rem !important;
   }
   .postPageDescription {
-    font-size: 0.75rem !important;
+    font-size: 0.9rem !important;
   }
-  .editIcon {
-    font-size: 2rem !important;
+  .Icon {
+    font-size: 1.5rem !important;
   }
 
   .postText {
     padding: 1rem !important;
+  }
+  .postWriterImage {
+    width: 90px !important;
+    height: 90px !important;
   }
 }

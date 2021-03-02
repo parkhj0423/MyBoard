@@ -119,7 +119,7 @@ function LandingPage(props) {
               </div>,
             ]}
           >
-            <div style={{ height: '110px' }}>
+            <div style={{ height: '75px' }}>
               <Title level={4}>{postlist.title}</Title>
               <p style={{ color: '#868e96' }}>{postlist.description}</p>
             </div>

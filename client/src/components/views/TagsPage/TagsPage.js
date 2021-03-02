@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Avatar, Tag, message, List } from 'antd';
-
+import '../MyPage/MyProfileMedia.css';
 function TagsPage(props) {
   const tag = props.match.params.tags;
   const [PostList, setPostList] = useState([]);
@@ -34,17 +34,20 @@ function TagsPage(props) {
     return (
       <List key={index} itemLayout="horizontal">
         <List.Item
+        className='myPageListItem'
           style={{
             display: 'flex',
-            width: '80%',
+            width: '100%',
             margin: '0 auto',
             justifyContent: 'flex-start',
+            paddingLeft:'1rem'
           }}
         >
-          <div style={{ maxWidth: '300px' }}>
+          <div className='listImage' style={{ maxWidth: '100%' }}>
             <a href={`/board/${list._id}`}>
               <img
-                style={{ width: '100%', height: '167px' }}
+                className="myPagePostImage"
+                style={{ width: '300px', height: '167px' }}
                 alt="thumbnail"
                 src={
                   imageUrl
@@ -54,7 +57,7 @@ function TagsPage(props) {
               />
             </a>
           </div>
-          <div style={{ margin: '1rem 0 0 2rem' }}>
+          <div style={{ margin: '1rem 0 0 1rem' }}>
             <List.Item.Meta
               avatar={<Avatar src={list.writer.image} />}
               title={
@@ -64,9 +67,9 @@ function TagsPage(props) {
                   </h2>
                 </a>
               }
-              description={<h3>{list.writer.name}</h3>}
+              
             />
-            <h3 style={{ color: '#868e96' }}>{list.description}</h3>
+            <h3 style={{ color: '#868e96',margin:'0.75rem 0' }}>{list.description}</h3>
             {list.tags.map((tags, index) => {
               const colors = ['#f50', '#2db7f5', '#87d068', '#108ee9'];
               return (
@@ -101,7 +104,7 @@ function TagsPage(props) {
         }}
       >
         <React.Fragment>
-          <h3 style={{ textAlign: 'center' }}>
+          <h3 style={{ textAlign: 'center', marginTop: '1rem'  }}>
             총 {tagFilter.length} 개의 포스트
           </h3>
           <br />

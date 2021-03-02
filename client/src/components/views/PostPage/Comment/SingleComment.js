@@ -64,49 +64,67 @@ function SingleComment(props) {
   };
 
   const actions = [
-    <LikeDislikes userId={localStorage.getItem('userId')} commentId={props.comment._id}/>,
+    <LikeDislikes
+      userId={localStorage.getItem('userId')}
+      commentId={props.comment._id}
+    />,
     <span
       style={{ paddingLeft: '15px', cursor: 'pointer' }}
       onClick={onClickReplyOpen}
       key="comment-basic-reply-to"
     >
-      Reply to
+      답글 달기
     </span>,
-    <Icon type="delete" theme="filled" onClick={deleteComment} />,
-  ];
 
-  
+    <Icon
+      type={
+        props.comment.writer._id === localStorage.getItem('userId')
+          ? 'delete'
+          : 'none'
+      }
+      theme="filled"
+      onClick={deleteComment}
+    />,
+  ];
 
   return (
     <div>
       {props.comment.writer && (
         <Comment
           actions={actions}
-          author={<a href={`/mypage/${props.comment.writer._id}`}><h3>{props.comment.writer.name}</h3></a>}
-          avatar={<a href={`/mypage/${props.comment.writer._id}`}><Avatar src={props.comment.writer.image} alt="avatarImage" /></a>}
+          author={
+            <a href={`/mypage/${props.comment.writer._id}`}>
+              <h3>{props.comment.writer.name}</h3>
+            </a>
+          }
+          avatar={
+            <a href={`/mypage/${props.comment.writer._id}`}>
+              <Avatar src={props.comment.writer.image} alt="avatarImage" />
+            </a>
+          }
           content={<p>{props.comment.text}</p>}
         />
       )}
       {OpenReply && (
         <div className="group" style={{ width: '100%' }}>
-        <input
-          style={{ width: '100%' }}
-          type="text"
-          required
-          value={CommentValue}
-          onChange={handleClick}
-        />
-        <span className="highlight"></span>
-        <span className="bar"></span>
-        <label>Comment</label>
-        <Icon
-          className="submitIcon"
-          type="arrow-right"
-          theme="outlined"
-          style={{ fontSize: '30px', cursor: 'pointer' }}
-          onClick={onSubmit}
-        />
-      </div>
+          <input
+            style={{ width: '100%' }}
+            type="text"
+            required
+            value={CommentValue}
+            onChange={handleClick}
+          />
+          <span className="highlight"></span>
+          <span className="bar"></span>
+          <label>답글 작성</label>
+          <Icon
+            className="submitIcon"
+            type="arrow-right"
+            theme="outlined"
+            style={{ fontSize: '30px', cursor: 'pointer' }}
+            onClick={onSubmit}
+          />
+        </div>
       )}
     </div>
   );

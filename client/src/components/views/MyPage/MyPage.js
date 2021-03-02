@@ -44,16 +44,16 @@ function MyPage(props) {
     return (
       <List key={index} itemLayout="horizontal">
         <List.Item
-        className='myPageListItem'
+          className="myPageListItem"
           style={{
             display: 'flex',
             width: '100%',
             margin: '0 auto',
             justifyContent: 'flex-start',
-            paddingLeft:'1rem'
+            paddingLeft: '1rem',
           }}
         >
-          <div style={{ maxWidth: '100%' }}>
+          <div className='listImage' style={{ maxWidth: '100%' }}>
             <a href={`/board/${list._id}`}>
               <img
                 className="myPagePostImage"
@@ -78,7 +78,7 @@ function MyPage(props) {
                 </a>
               }
             />
-            <h3 style={{ color: ' ' }}>{list.description}</h3>
+            <h3 style={{ color: '#868e96',margin:'0.75rem 0' }}>{list.description}</h3>
             {list.tags.map((tags, index) => {
               const colors = ['#f50', '#2db7f5', '#87d068', '#108ee9'];
               return (

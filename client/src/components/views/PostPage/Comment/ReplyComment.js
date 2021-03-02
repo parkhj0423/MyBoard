@@ -52,7 +52,7 @@ function ReplyComment(props) {
           }}
           onClick={onHandleChange}
         >
-          View {ChildCommentNumber} more comment(s)
+         {ChildCommentNumber} 개의 답글
         </p>
       )}
 

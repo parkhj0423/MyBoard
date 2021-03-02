@@ -11,4 +11,8 @@
     .myPageListItem {
         padding-left: 0 !important;
     }
+    .listImage {
+        max-width: 95% !important;
+        margin: 0 auto !important;
+    }
 }

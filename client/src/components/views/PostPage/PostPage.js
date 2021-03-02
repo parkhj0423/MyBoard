@@ -5,7 +5,7 @@ import Axios from 'axios';
 import { Icon, Tag, Popconfirm, message, Avatar, Card } from 'antd';
 import Comment from './Comment/Comment';
 import PostLike from './PostLike';
-import './PostPage.css'
+import './PostPage.css';
 const { Title } = Typography;
 const { Meta } = Card;
 function PostPage(props) {
@@ -73,7 +73,9 @@ function PostPage(props) {
             justifyContent: 'space-between',
           }}
         >
-          <h1 className='postPageName'><b>{Post.writer.name}님의 게시글</b></h1>
+          <h1 className="postPageName">
+            <b>{Post.writer.name}님의 게시글</b>
+          </h1>
         </div>
         <div
           style={{
@@ -81,30 +83,55 @@ function PostPage(props) {
             justifyContent: 'space-between',
           }}
         >
-          <div >
-            <div style={{ display: 'flex',alignItems:'center' }}>
-            <Icon
-            className='postPageTitle'
-              type="notification"
-              theme="outlined"
-              style={{ fontSize: '2.5rem', marginRight: '1rem' }}
-            />
-            <h1 className='postPageTitle'><b>{Post.title}</b></h1>
+          <div>
+            <div style={{ display: 'flex', marginBottom: '1rem' }}>
+              <Icon
+                className="postPageTitle"
+                type="notification"
+                theme="outlined"
+                style={{
+                  fontSize: '1.75rem',
+                  marginRight: '1rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              />
+              <h2
+                className="postPageTitle"
+                style={{ textAlign: 'center', margin: '0' }}
+              >
+                <b>{Post.title}</b>
+              </h2>
             </div>
-            <div style={{ display: 'flex',alignItems:'center' }}>
-            <Icon
-              className='postPageDescription'
-              type="pushpin"
-              theme="outlined"
-              style={{ fontSize: '1.5rem', marginRight: '1rem' }}
-            />
-            <h3 className='postPageDescription'>{Post.description}</h3>
+            <div style={{ display: 'flex' }}>
+              <Icon
+                className="postPageDescription"
+                type="pushpin"
+                theme="outlined"
+                style={{
+                  fontSize: '1.25rem',
+                  marginRight: '1rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              />
+              <h3
+                className="postPageDescription"
+                style={{ textAlign: 'center', margin: '0' }}
+              >
+                {Post.description}
+              </h3>
             </div>
           </div>
 
           {Post.writer._id === localStorage.getItem('userId') && (
             <a href={`/modify/${postId}`} property={Post}>
-              <Icon className='editIcon'type="edit" theme="filled" style={{ fontSize: '2.5rem' }} />
+              <Icon
+                className="Icon"
+                type="edit"
+                theme="filled"
+                style={{ fontSize: '2rem', color: 'black' }}
+              />
             </a>
           )}
         </div>
@@ -113,8 +140,7 @@ function PostPage(props) {
             display: 'flex',
             justifyContent: 'space-between',
             marginTop: '1rem',
-            marginRight: '1rem',
-          }}  
+          }}
         >
           <div>
             {Post.tags.map((tags, index) => {
@@ -135,7 +161,7 @@ function PostPage(props) {
         <hr />
         <br />
         <div
-         className='postText'
+          className="postText"
           style={{
             background: '#faf7f7',
             padding: '3em',
@@ -156,6 +182,7 @@ function PostPage(props) {
               <Meta
                 avatar={
                   <Avatar
+                    className="postWriterImage"
                     src={Post.writer.image}
                     style={{ width: '150px', height: '150px' }}
                   />
@@ -167,12 +194,14 @@ function PostPage(props) {
                 display: 'flex',
                 justifyContent: 'center',
                 flexDirection: 'column',
-                marginLeft:'1rem'
+                marginLeft: '1rem',
               }}
             >
               <a href={`/mypage/${Post.writer._id}`}>
-                <Title level={2}>{Post.writer.name}</Title>
-                <p style={{ color: '#868e96',fontSize:'0.75rem' }}>{Post.writer.introduce}</p>
+                <Title level={3}>{Post.writer.name}</Title>
+                <p style={{ color: '#868e96', fontSize: '0.75rem' }}>
+                  {Post.writer.introduce}
+                </p>
               </a>
             </div>
           </div>
@@ -184,6 +213,7 @@ function PostPage(props) {
               cancelText="아니오"
             >
               <Icon
+                className="Icon"
                 type="delete"
                 key="delete"
                 theme="filled"

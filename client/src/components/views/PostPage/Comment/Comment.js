@@ -46,7 +46,7 @@ function Comment(props) {
     <div>
       <div>
         <br />
-        <Title level={4}>Replies</Title>
+        <Title level={4}>댓글</Title>
         <hr />
 
         {/* commments Lists */}
@@ -84,7 +84,7 @@ function Comment(props) {
           />
           <span className="highlight"></span>
           <span className="bar"></span>
-          <label>Comment</label>
+          <label>댓글 작성</label>
           <Icon
             className="submitIcon"
             type="arrow-right"

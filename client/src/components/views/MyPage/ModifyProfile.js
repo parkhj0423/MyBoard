@@ -65,7 +65,7 @@ function ModifyProfile(props) {
         {ToggleModifyButton === false ? (
           MyProfile.name
         ) : (
-          <div className="group" style={{ marginTop: '1rem' }}>
+          <div className="group" style={{width:'300px' }}>
             <input type="text" required value={Name} onChange={onNameChange} />
             <span className="highlight"></span>
             <span className="bar"></span>
@@ -88,7 +88,7 @@ function ModifyProfile(props) {
           </p>
         </div>
       ) : (
-        <div className="group" style={{ margin: '2rem' }}>
+        <div className="group" style={{width:'300px',marginLeft:'1rem' }}>
           <input
             type="text"
             required
