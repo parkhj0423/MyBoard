@@ -168,7 +168,7 @@ function PostPage(props) {
             borderRadius: '25px',
           }}
         >
-          <div dangerouslySetInnerHTML={{ __html: Post.text }} />
+          <div dangerouslySetInnerHTML={{ __html: Post.text }}  />
         </div>
         <div
           style={{
