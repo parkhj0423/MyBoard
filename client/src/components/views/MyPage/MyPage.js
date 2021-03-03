@@ -102,7 +102,7 @@ function MyPage(props) {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-        }}
+        }} 
       >
         <div>
           {/* 프로필 사진 이미지 업로드 컴포넌트 */}
